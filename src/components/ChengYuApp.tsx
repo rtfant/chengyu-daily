@@ -521,6 +521,26 @@ export default function ChengYuApp() {
               </div>
             )}
 
+            {/* Usage/Grammar */}
+            {idiom.usage && (
+              <div className="mb-3 opacity-0 animate-fade-in-up stagger-5">
+                <div className="flex items-start gap-2 mb-1">
+                  <span
+                    className="text-xs font-semibold tracking-widest shrink-0 mt-0.5"
+                    style={{ color: "var(--accent-gold)" }}
+                  >
+                    用法
+                  </span>
+                </div>
+                <p
+                  className="text-sm md:text-base leading-relaxed"
+                  style={{ color: "var(--text-secondary)" }}
+                >
+                  {idiom.usage}
+                </p>
+              </div>
+            )}
+
             {/* Synonyms & Antonyms */}
             {(idiom.synonyms.length > 0 || idiom.antonyms.length > 0) && (
               <div className="opacity-0 animate-fade-in-up stagger-6">

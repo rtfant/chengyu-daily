@@ -5,6 +5,7 @@ export interface Idiom {
   origin: string;
   example: string;        // 保留兼容旧数据
   examples?: string[];    // 新增：多条例句（最多3条）
+  usage?: string;         // 用法/语法（如"偏正式；作谓语、宾语；含褒义"）
   synonyms: string[];
   antonyms: string[];
 }

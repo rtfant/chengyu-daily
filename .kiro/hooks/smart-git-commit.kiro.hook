@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "智能 Git 提交",
+  "description": "当用户请求推送代码时,自动检查 git diff,分析变更内容,生成详细的中文提交信息,然后执行 git add、commit 和 push",
+  "version": "1",
+  "when": {
+    "type": "promptSubmit"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "用户请求推送代码。请执行以下步骤:\n1. 运行 git status 检查变更文件\n2. 运行 git diff 查看具体变更内容\n3. 根据变更内容生成一个清晰、具体的中文提交信息(例如:\"新增XX功能\"、\"优化XX逻辑\"、\"修复XX问题\"等)\n4. 执行 git add .\n5. 执行 git commit -m \"你生成的提交信息\"\n6. 执行 git push\n7. 简短确认完成\n\n不要询问用户,直接完成所有步骤。"
+  }
+}

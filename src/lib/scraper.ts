@@ -134,9 +134,12 @@ async function scrapeFromZdic(word: string): Promise<Idiom | null> {
 
     let meaning = "";
     let origin = "";
+    let usage = "";
     const examples: string[] = [];
     const synonyms: string[] = [];
     const antonyms: string[] = [];
+    // 收集额外的释义（来自 .jnr/.gnr）用于补充主释义
+    const extraMeanings: string[] = [];
 
     // 解析成语解释区块 (#cyjs .content p)
     $("#cyjs .content p, .cyjs .content p").each((_, el) => {
@@ -146,7 +149,9 @@ async function scrapeFromZdic(word: string): Promise<Idiom | null> {
       } else if (text.startsWith("【出处】")) {
         origin = text.replace("【出处】", "").trim();
       } else if (text.startsWith("【示例】") || text.startsWith("【例句】")) {
-        const ex = text.replace(/^【[示例例句]+】/, "").trim();
+        // 清理 ◎ 来源标注，如 "这也是一则事实... ◎《花月痕》第五一回"
+        let ex = text.replace(/^【[示例例句]+】/, "").trim();
+        ex = ex.replace(/\s*◎.*$/, "").trim();
         if (ex && examples.length < 3) examples.push(ex);
       } else if (text.startsWith("【近义词】")) {
         const syn = text.replace("【近义词】", "").trim();
@@ -154,6 +159,8 @@ async function scrapeFromZdic(word: string): Promise<Idiom | null> {
       } else if (text.startsWith("【反义词】")) {
         const ant = text.replace("【反义词】", "").trim();
         antonyms.push(...ant.split(/[、，,\s]+/).filter(Boolean));
+      } else if (text.startsWith("【语法】")) {
+        usage = text.replace("【语法】", "").trim();
       }
     });
 
@@ -169,8 +176,18 @@ async function scrapeFromZdic(word: string): Promise<Idiom | null> {
       text = text.replace(/&mdash;/g, "\u2014\u2014").replace(/&hellip;/g, "...").replace(/&ldquo;/g, "\u201C").replace(/&rdquo;/g, "\u201D");
       if (text.startsWith("\u25CE") || text.length < 8) return;
 
+      // 提取 [英文释义] 后面的中文详细释义（.jnr 区块）
+      const encsMatch = text.match(/\[.*?\]\s*(.+)/);
+      if (encsMatch) {
+        const detailMeaning = encsMatch[1].trim();
+        // 排除纯例句（含"如："），只取释义性文本
+        if (detailMeaning.length > 5 && !detailMeaning.startsWith("如")) {
+          extraMeanings.push(detailMeaning);
+        }
+      }
+
       // 提取 "如：「...」" 格式的例句
-      const ruMatch = text.match(/\u5982[\uFF1A:]?\s*[\u300C\u201C](.+?)[\u300D\u201D]/);
+      const ruMatch = text.match(/如[\uFF1A:]?\s*[\u300C\u201C](.+?)[\u300D\u201D]/);
       if (ruMatch) {
         addExample(ruMatch[1].trim());
         return;
@@ -181,7 +198,6 @@ async function scrapeFromZdic(word: string): Promise<Idiom | null> {
       if (allQuotes) {
         for (const q of allQuotes) {
           const inner = q.slice(1, -1).trim();
-          // 确保是例句而非书名（排除《》书名号开头的引用来源）
           if (inner.length > 8 && !inner.startsWith("\u300A")) {
             addExample(inner);
           }
@@ -189,9 +205,9 @@ async function scrapeFromZdic(word: string): Promise<Idiom | null> {
         return;
       }
 
-      // 提取包含成语词本身的用法句子（通常是jnr区块的短例句）
+      // 提取包含成语词本身的用法句子
       if (text.includes(word) && text.length > word.length + 4 && text.length < 150) {
-        if (text.startsWith("[") || text.includes("\u62FC\u97F3") || text.includes("\u6CE8\u97F3")) return;
+        if (text.startsWith("[") || text.includes("拼音") || text.includes("注音")) return;
         if (text.startsWith(word) && /[a-zA-Z\u0101\u00E1\u01CE\u00E0\u0113\u00E9\u011B\u00E8\u012B\u00ED\u01D0\u00EC\u014D\u00F3\u01D2\u00F2\u016B\u00FA\u01D4\u00F9\u01D6\u01D8\u01DA\u01DC\u3100-\u312F]/.test(text.slice(word.length, word.length + 3))) return;
         if (/[\u3100-\u312F]{2,}/.test(text)) return;
         if (origin && (text.includes(origin) || origin.includes(text))) return;
@@ -200,16 +216,28 @@ async function scrapeFromZdic(word: string): Promise<Idiom | null> {
         return;
       }
 
-      // 备用释义来源
-      if (!meaning) {
-        if (text.includes("[") && text.includes("]")) {
-          const m = text.replace(/\[.*?\]\s*/, "").trim();
-          if (m.length > 5) meaning = m;
-        } else if (text.length > 8 && !text.startsWith("\u5982")) {
-          meaning = text;
+      // 备用释义来源（不含英文标注的长文本）
+      if (!meaning && !encsMatch) {
+        if (text.length > 8 && !text.startsWith("如")) {
+          extraMeanings.push(text);
         }
       }
     });
+
+    // 合并释义：如果主释义较短，用额外释义补充
+    if (meaning && extraMeanings.length > 0) {
+      for (const em of extraMeanings) {
+        // 只补充不重复的内容
+        if (em.length > 5 && !meaning.includes(em) && !em.includes(meaning)) {
+          // 确保连接处不会出现重复标点
+          const sep = meaning.endsWith("。") || meaning.endsWith("；") ? "" : "。";
+          meaning = meaning + sep + em;
+          break; // 最多补充一条
+        }
+      }
+    } else if (!meaning && extraMeanings.length > 0) {
+      meaning = extraMeanings[0];
+    }
 
     // 如果例句不足3条，从出处中提取引用句作为补充例句
     if (examples.length < 3 && origin) {
@@ -231,6 +259,7 @@ async function scrapeFromZdic(word: string): Promise<Idiom | null> {
       origin: origin || "",
       example: examples[0] || "",
       examples: examples.length > 0 ? examples : undefined,
+      usage: usage || undefined,
       synonyms,
       antonyms,
     };
@@ -471,6 +500,153 @@ async function scrapeFromChazidian(word: string): Promise<Idiom | null> {
   }
 }
 
+// --- Source 7: 千万库 (qianwanku.com) ---
+// 该站使用 GB2312 编码，URL 基于内部 ID，需要先搜索获取 ID
+async function scrapeFromQianwanku(word: string): Promise<Idiom | null> {
+  try {
+    // 第一步：通过搜索页获取成语的内部 ID
+    const gb2312Word = new TextEncoder().encode(word);
+    // 将 UTF-8 字节转为 URL 编码的 GB2312（近似处理：直接用 encodeURIComponent）
+    const searchUrl = `http://chengyu.qianwanku.com/socy.asp?txtname=${encodeURIComponent(word)}`;
+    const searchRes = await fetch(searchUrl, {
+      headers: {
+        ...HEADERS,
+        Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+      },
+      signal: AbortSignal.timeout(TIMEOUT),
+      redirect: "follow",
+    });
+    if (!searchRes.ok) return null;
+
+    const searchBuf = await searchRes.arrayBuffer();
+    const searchHtml = new TextDecoder("gb2312").decode(searchBuf);
+    const $search = cheerio.load(searchHtml);
+
+    // 从搜索结果中找到匹配的成语链接
+    let cyUrl = "";
+    $search("a").each((_, el) => {
+      const href = $search(el).attr("href") || "";
+      const text = $search(el).text().trim();
+      if (text === word && href.includes("cy.asp?id=")) {
+        cyUrl = href;
+      }
+    });
+
+    if (!cyUrl) return null;
+
+    // 第二步：抓取成语详情页
+    const detailUrl = cyUrl.startsWith("http")
+      ? cyUrl
+      : `http://chengyu.qianwanku.com/${cyUrl}`;
+    const detailRes = await fetch(detailUrl, {
+      headers: HEADERS,
+      signal: AbortSignal.timeout(TIMEOUT),
+    });
+    if (!detailRes.ok) return null;
+
+    const detailBuf = await detailRes.arrayBuffer();
+    const detailHtml = new TextDecoder("gb2312").decode(detailBuf);
+    const $ = cheerio.load(detailHtml);
+
+    let pinyin = "";
+    let meaning = "";
+    let origin = "";
+    let usage = "";
+    const examples: string[] = [];
+    const synonyms: string[] = [];
+    const antonyms: string[] = [];
+
+    // 拼音：在 .pinyin 类中
+    pinyin = $(".pinyin").text().trim() || "";
+
+    // 解析 h2 标题后的内容段落
+    const content = $(".wid.nr.tl").last();
+    let currentSection = "";
+
+    content.children().each((_, el) => {
+      const tagName = (el as unknown as { tagName?: string }).tagName?.toLowerCase() || "";
+      const text = $(el).text().trim();
+
+      if (tagName === "h2") {
+        currentSection = text;
+        return;
+      }
+
+      // 释义段落（h2后面的文本节点）
+      if (currentSection.includes("意思") && !meaning) {
+        const cleanText = text.replace(/\n/g, "").trim();
+        if (cleanText.length > 3) meaning = cleanText;
+      }
+    });
+
+    // 用正则从完整 HTML 文本中提取各字段
+    const fullText = content.text();
+
+    // 释义
+    if (!meaning) {
+      const meaningMatch = fullText.match(/的意思[\s\n]*(.+?)(?:\n|成语出处)/);
+      if (meaningMatch) meaning = meaningMatch[1].trim();
+    }
+
+    // 出处
+    const originMatch = fullText.match(/成语出处[\s\n]*(.+?)(?:\n|的用法)/);
+    if (originMatch) origin = originMatch[1].trim();
+
+    // 用法段落
+    const usageSection = fullText.match(/的用法[\s\n]*([\s\S]+?)(?:\n近\/反义词|的近|其它说明)/);
+    if (usageSection) {
+      const usageText = usageSection[1].trim();
+      // 提取感情色彩和语法
+      const grammarMatch = usageText.match(/【成语语法】[：:]\s*(.+?)(?:\n|【|$)/);
+      const emotionMatch = usageText.match(/【感情色彩】[：:]\s*(.+?)(?:\n|【|$)/);
+      if (grammarMatch) {
+        usage = grammarMatch[1].trim();
+        if (emotionMatch) {
+          const emotion = emotionMatch[1].trim();
+          if (!usage.includes(emotion)) usage = emotion + "；" + usage;
+        }
+      }
+      // 提取示例
+      const exMatch = usageText.match(/【成语示例】[：:]\s*(.+?)(?:\n|【|$)/);
+      if (exMatch) {
+        let ex = exMatch[1].trim();
+        // 清理来源标注
+        ex = ex.replace(/（《[^）]+》[^）]*）\s*$/, "").replace(/\s*《[^》]+》[^）]*$/, "").trim();
+        if (ex.length > 5 && examples.length < 3) examples.push(ex);
+      }
+    }
+
+    // 近反义词
+    const synMatch = fullText.match(/【近义词】[：:]\s*(.+?)(?:\n|【|$)/);
+    const antMatch = fullText.match(/【反义词】[：:]\s*(.+?)(?:\n|【|$)/);
+    if (synMatch) {
+      synonyms.push(...synMatch[1].trim().split(/[、，,\s]+/).filter(Boolean));
+    }
+    if (antMatch) {
+      const antText = antMatch[1].trim();
+      if (antText && antText !== "\u00A0") {
+        antonyms.push(...antText.split(/[、，,\s]+/).filter(Boolean));
+      }
+    }
+
+    if (!meaning && !pinyin) return null;
+
+    return {
+      idiom: word,
+      pinyin,
+      meaning: meaning || `${word}的释义`,
+      origin: origin || "",
+      example: examples[0] || "",
+      examples: examples.length > 0 ? examples : undefined,
+      usage: usage || undefined,
+      synonyms,
+      antonyms,
+    };
+  } catch {
+    return null;
+  }
+}
+
 /**
  * 合并多个来源的数据，综合显示最完整的内容
  * 策略：从所有来源中取每个字段的最佳值，例句去重合并
@@ -509,6 +685,11 @@ function mergeIdiomData(results: (Idiom | null)[]): Idiom | null {
     // 出处：取最长的
     if (r.origin && r.origin.length > merged.origin.length) {
       merged.origin = r.origin;
+    }
+
+    // 用法：取最长的
+    if (r.usage && (!merged.usage || r.usage.length > merged.usage.length)) {
+      merged.usage = r.usage;
     }
 
     // 例句：从所有来源收集，去重
@@ -568,6 +749,7 @@ export async function fetchIdiom(word: string): Promise<Idiom> {
     scrapeFromQianp(word),
     scrapeFromHttpcn(word),
     scrapeFromChazidian(word),
+    scrapeFromQianwanku(word),
   ];
 
   const results = await Promise.allSettled(scrapers);
