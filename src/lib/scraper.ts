@@ -1,1 +1,614 @@
-{"success":true,"file":{"name":"scraper.ts","path":"outputs/scraper.ts","size":18931,"content":"aW1wb3J0ICogYXMgY2hlZXJpbyBmcm9tICJjaGVlcmlvIjsKaW1wb3J0IHsgSWRpb20sIHNlZWRJZGlvbXMgfSBmcm9tICJAL2RhdGEvc2VlZC1pZGlvbXMiOwppbXBvcnQgeyBleHRlbmRlZElkaW9tcyB9IGZyb20gIkAvZGF0YS9leHRlbmRlZC1pZGlvbXMiOwoKLy8g6K+35rGC6LaF5pe25pe26Ze0CmNvbnN0IFRJTUVPVVQgPSAxMDAwMDsKCi8vIOmAmueUqOivt+axguWktApjb25zdCBIRUFERVJTID0gewogICJVc2VyLUFnZW50IjoKICAgICJNb3ppbGxhLzUuMCAoV2luZG93cyBOVCAxMC4wOyBXaW42NDsgeDY0KSBBcHBsZVdlYktpdC81MzcuMzYgKEtIVE1MLCBsaWtlIEdlY2tvKSBDaHJvbWUvMTIwLjAuMC4wIFNhZmFyaS81MzcuMzYiLAogIEFjY2VwdDogInRleHQvaHRtbCxhcHBsaWNhdGlvbi94aHRtbCt4bWwsYXBwbGljYXRpb24veG1sO3E9MC45LCovKjtxPTAuOCIsCiAgIkFjY2VwdC1MYW5ndWFnZSI6ICJ6aC1DTix6aDtxPTAuOSxlbjtxPTAuOCIsCn07CgovLyAtLS0gU291cmNlIDE6IOeZvuW6puaxieivrSAtLS0KYXN5bmMgZnVuY3Rpb24gc2NyYXBlRnJvbUJhaWR1SGFueXUod29yZDogc3RyaW5nKTogUHJvbWlzZTxJZGlvbSB8IG51bGw+IHsKICB0cnkgewogICAgY29uc3QgdXJsID0gYGh0dHBzOi8vaGFueXUuYmFpZHUuY29tL3M/d2Q9JHtlbmNvZGVVUklDb21wb25lbnQod29yZCl9JnB0eXBlPXppY2lgOwogICAgY29uc3QgcmVzID0gYXdhaXQgZmV0Y2godXJsLCB7CiAgICAgIGhlYWRlcnM6IEhFQURFUlMsCiAgICAgIHNpZ25hbDogQWJvcnRTaWduYWwudGltZW91dChUSU1FT1VUKSwKICAgIH0pOwogICAgaWYgKCFyZXMub2spIHJldHVybiBudWxsOwoKICAgIGNvbnN0IGh0bWwgPSBhd2FpdCByZXMudGV4dCgpOwogICAgY29uc3QgJCA9IGNoZWVyaW8ubG9hZChodG1sKTsKCiAgICBjb25zdCBwaW55aW4gPQogICAgICAkKCIjcGlueWluIC5rZXl3b3JkIikudGV4dCgpLnRyaW0oKSB8fAogICAgICAkKCIucHJvbm91bmNlIC5rZXl3b3JkIikudGV4dCgpLnRyaW0oKSB8fAogICAgICAiIjsKCiAgICAvLyDojrflj5bmm7Tor6bnu4bnmoTph4rkuYkKICAgIGxldCBtZWFuaW5nID0gIiI7CiAgICBjb25zdCBtZWFuaW5nRWwgPSAkKCIudGFiLWNvbnRlbnQgLmNvbnRlbnQgLnRleHQiKS5maXJzdCgpOwogICAgaWYgKG1lYW5pbmdFbC5sZW5ndGgpIHsKICAgICAgbWVhbmluZyA9IG1lYW5pbmdFbC50ZXh0KCkudHJpbSgpOwogICAgfQogICAgaWYgKCFtZWFuaW5nKSB7CiAgICAgIG1lYW5pbmcgPSAkKCIjZXhwbGFuYXRpb24gLnRleHQiKS5maXJzdCgpLnRleHQoKS50cmltKCk7CiAgICB9CiAgICAvLyDlsJ3or5Xojrflj5bmm7TlpJrph4rkuYnlhoXlrrkKICAgIGlmICghbWVhbmluZykgewogICAgICAkKCIuYmFzaWNtZWFuLWl0ZW0iKS5lYWNoKChfLCBlbCkgPT4gewogICAgICAgIGNvbnN0IHRleHQgPSAkKGVsKS50ZXh0KCkudHJpbSgpOwogICAgICAgIGlmICh0ZXh0ICYmIG1lYW5pbmcubGVuZ3RoIDwgNTAwKSB7CiAgICAgICAgICBtZWFuaW5nICs9IChtZWFuaW5nID8gIu+8myIgOiAiIikgKyB0ZXh0OwogICAgICAgIH0KICAgICAgfSk7CiAgICB9CgogICAgY29uc3Qgb3JpZ2luID0KICAgICAgJCgiI3NvdXJjZSAudGV4dCIpLmZpcnN0KCkudGV4dCgpLnRyaW0oKSB8fAogICAgICAkKCIudGFiLWNvbnRlbnQiKQogICAgICAgIC5maWx0ZXIoKF8sIGVsKSA9PiAkKGVsKS5maW5kKCIudGl0bGUiKS50ZXh0KCkuaW5jbHVkZXMoIuWHuuWkhCIpKQogICAgICAgIC5maW5kKCIudGV4dCIpCiAgICAgICAgLmZpcnN0KCkKICAgICAgICAudGV4dCgpCiAgICAgICAgLnRyaW0oKSB8fAogICAgICAiIjsKCiAgICAvLyDojrflj5blpJrmnaHkvovlj6UKICAgIGNvbnN0IGV4YW1wbGVzOiBzdHJpbmdbXSA9IFtdOwogICAgJCgiI2V4YW1wbGUgLnRleHQsIC5leGFtcGxlLWl0ZW0iKS5lYWNoKChpLCBlbCkgPT4gewogICAgICBpZiAoaSA8IDMpIHsKICAgICAgICBjb25zdCB0ZXh0ID0gJChlbCkudGV4dCgpLnRyaW0oKTsKICAgICAgICBpZiAodGV4dCkgZXhhbXBsZXMucHVzaCh0ZXh0KTsKICAgICAgfQogICAgfSk7CgogICAgY29uc3Qgc3lub255bXNUZXh0ID0KICAgICAgJCgiI3N5bm9ueW0gLnRleHQiKS50ZXh0KCkudHJpbSgpIHx8CiAgICAgICQoIi50YWItY29udGVudCIpCiAgICAgICAgLmZpbHRlcigoXywgZWwpID0+ICQoZWwpLmZpbmQoIi50aXRsZSIpLnRleHQoKS5pbmNsdWRlcygi6L+R5LmJ6K+NIikpCiAgICAgICAgLmZpbmQoIi50ZXh0IikKICAgICAgICAudGV4dCgpCiAgICAgICAgLnRyaW0oKSB8fAogICAgICAiIjsKICAgIGNvbnN0IGFudG9ueW1zVGV4dCA9CiAgICAgICQoIiNhbnRvbnltIC50ZXh0IikudGV4dCgpLnRyaW0oKSB8fAogICAgICAkKCIudGFiLWNvbnRlbnQiKQogICAgICAgIC5maWx0ZXIoKF8sIGVsKSA9PiAkKGVsKS5maW5kKCIudGl0bGUiKS50ZXh0KCkuaW5jbHVkZXMoIuWPjeS5ieivjSIpKQogICAgICAgIC5maW5kKCIudGV4dCIpCiAgICAgICAgLnRleHQoKQogICAgICAgIC50cmltKCkgfHwKICAgICAgIiI7CgogICAgY29uc3Qgc3lub255bXMgPSBzeW5vbnltc1RleHQKICAgICAgPyBzeW5vbnltc1RleHQuc3BsaXQoL1vjgIHvvIwsXHNdKy8pLmZpbHRlcihCb29sZWFuKQogICAgICA6IFtdOwogICAgY29uc3QgYW50b255bXMgPSBhbnRvbnltc1RleHQKICAgICAgPyBhbnRvbnltc1RleHQuc3BsaXQoL1vjgIHvvIwsXHNdKy8pLmZpbHRlcihCb29sZWFuKQogICAgICA6IFtdOwoKICAgIGlmICghbWVhbmluZyAmJiAhcGlueWluKSByZXR1cm4gbnVsbDsKCiAgICByZXR1cm4gewogICAgICBpZGlvbTogd29yZCwKICAgICAgcGlueWluOiBwaW55aW4gfHwgIiIsCiAgICAgIG1lYW5pbmc6IG1lYW5pbmcgfHwgYCR7d29yZH3nmoTph4rkuYlgLAogICAgICBvcmlnaW46IG9yaWdpbiB8fCAiIiwKICAgICAgZXhhbXBsZTogZXhhbXBsZXNbMF0gfHwgIiIsCiAgICAgIGV4YW1wbGVzOiBleGFtcGxlcy5sZW5ndGggPiAwID8gZXhhbXBsZXMgOiB1bmRlZmluZWQsCiAgICAgIHN5bm9ueW1zLAogICAgICBhbnRvbnltcywKICAgIH07CiAgfSBjYXRjaCB7CiAgICByZXR1cm4gbnVsbDsKICB9Cn0KCi8vIC0tLSBTb3VyY2UgMjog5rGJ5YW4ICh6ZGljLm5ldCkgLS0tCmFzeW5jIGZ1bmN0aW9uIHNjcmFwZUZyb21aZGljKHdvcmQ6IHN0cmluZyk6IFByb21pc2U8SWRpb20gfCBudWxsPiB7CiAgdHJ5IHsKICAgIGNvbnN0IHVybCA9IGBodHRwczovL3d3dy56ZGljLm5ldC9oYW5zLyR7ZW5jb2RlVVJJQ29tcG9uZW50KHdvcmQpfWA7CiAgICBjb25zdCByZXMgPSBhd2FpdCBmZXRjaCh1cmwsIHsKICAgICAgaGVhZGVyczogSEVBREVSUywKICAgICAgc2lnbmFsOiBBYm9ydFNpZ25hbC50aW1lb3V0KFRJTUVPVVQpLAogICAgfSk7CiAgICBpZiAoIXJlcy5vaykgcmV0dXJuIG51bGw7CgogICAgY29uc3QgaHRtbCA9IGF3YWl0IHJlcy50ZXh0KCk7CiAgICBjb25zdCAkID0gY2hlZXJpby5sb2FkKGh0bWwpOwoKICAgIC8vIOaLvOmfs++8muWcqCAuZGljcHkg5Lit77yI5o6S6ZmkIuazqOmfsyLooYzvvIkKICAgIGxldCBwaW55aW4gPSAiIjsKICAgICQoInAiKS5lYWNoKChfLCBlbCkgPT4gewogICAgICBjb25zdCB0ZXh0ID0gJChlbCkudGV4dCgpOwogICAgICBpZiAodGV4dC5pbmNsdWRlcygi5ou86Z+zIikgJiYgIXRleHQuaW5jbHVkZXMoIuazqOmfsyIpKSB7CiAgICAgICAgcGlueWluID0gJChlbCkuZmluZCgiLmRpY3B5IikudGV4dCgpLnRyaW0oKTsKICAgICAgfQogICAgfSk7CgogICAgbGV0IG1lYW5pbmcgPSAiIjsKICAgIGxldCBvcmlnaW4gPSAiIjsKICAgIGNvbnN0IGV4YW1wbGVzOiBzdHJpbmdbXSA9IFtdOwogICAgY29uc3Qgc3lub255bXM6IHN0cmluZ1tdID0gW107CiAgICBjb25zdCBhbnRvbnltczogc3RyaW5nW10gPSBbXTsKCiAgICAvLyDop6PmnpDmiJDor63op6Pph4rljLrlnZcgKCNjeWpzIC5jb250ZW50IHApCiAgICAkKCIjY3lqcyAuY29udGVudCBwLCAuY3lqcyAuY29udGVudCBwIikuZWFjaCgoXywgZWwpID0+IHsKICAgICAgY29uc3QgdGV4dCA9ICQoZWwpLnRleHQoKS50cmltKCk7CiAgICAgIGlmICh0ZXh0LnN0YXJ0c1dpdGgoIuOAkOino+mHiuOAkSIpKSB7CiAgICAgICAgbWVhbmluZyA9IHRleHQucmVwbGFjZSgi44CQ6Kej6YeK44CRIiwgIiIpLnRyaW0oKTsKICAgICAgfSBlbHNlIGlmICh0ZXh0LnN0YXJ0c1dpdGgoIuOAkOWHuuWkhOOAkSIpKSB7CiAgICAgICAgb3JpZ2luID0gdGV4dC5yZXBsYWNlKCLjgJDlh7rlpITjgJEiLCAiIikudHJpbSgpOwogICAgICB9IGVsc2UgaWYgKHRleHQuc3RhcnRzV2l0aCgi44CQ56S65L6L44CRIikgfHwgdGV4dC5zdGFydHNXaXRoKCLjgJDkvovlj6XjgJEiKSkgewogICAgICAgIGNvbnN0IGV4ID0gdGV4dC5yZXBsYWNlKC9e44CQW+ekuuS+i+S+i+WPpV0r44CRLywgIiIpLnRyaW0oKTsKICAgICAgICBpZiAoZXggJiYgZXhhbXBsZXMubGVuZ3RoIDwgMykgZXhhbXBsZXMucHVzaChleCk7CiAgICAgIH0gZWxzZSBpZiAodGV4dC5zdGFydHNXaXRoKCLjgJDov5HkuYnor43jgJEiKSkgewogICAgICAgIGNvbnN0IHN5biA9IHRleHQucmVwbGFjZSgi44CQ6L+R5LmJ6K+N44CRIiwgIiIpLnRyaW0oKTsKICAgICAgICBzeW5vbnltcy5wdXNoKC4uLnN5bi5zcGxpdCgvW+OAge+8jCxcc10rLykuZmlsdGVyKEJvb2xlYW4pKTsKICAgICAgfSBlbHNlIGlmICh0ZXh0LnN0YXJ0c1dpdGgoIuOAkOWPjeS5ieivjeOAkSIpKSB7CiAgICAgICAgY29uc3QgYW50ID0gdGV4dC5yZXBsYWNlKCLjgJDlj43kuYnor43jgJEiLCAiIikudHJpbSgpOwogICAgICAgIGFudG9ueW1zLnB1c2goLi4uYW50LnNwbGl0KC9b44CB77yMLFxzXSsvKS5maWx0ZXIoQm9vbGVhbikpOwogICAgICB9CiAgICB9KTsKCiAgICAvLyDku44gLmpuciDlkowgLmduciDljLrlnZfmj5Dlj5bmm7TlpJrkvovlj6Xlkozph4rkuYkKICAgIGNvbnN0IGFkZEV4YW1wbGUgPSAoZXg6IHN0cmluZykgPT4gewogICAgICBpZiAoZXggJiYgZXgubGVuZ3RoID4gNSAmJiBleGFtcGxlcy5sZW5ndGggPCAzICYmICFleGFtcGxlcy5zb21lKGUgPT4gZS5pbmNsdWRlcyhleCkgfHwgZXguaW5jbHVkZXMoZSkpKSB7CiAgICAgICAgZXhhbXBsZXMucHVzaChleCk7CiAgICAgIH0KICAgIH07CgogICAgJCgiLmpuciBwLCAuZ25yIHAsIC5nbnIgZGl2IikuZWFjaCgoXywgZWwpID0+IHsKICAgICAgbGV0IHRleHQgPSAkKGVsKS50ZXh0KCkudHJpbSgpOwogICAgICB0ZXh0ID0gdGV4dC5yZXBsYWNlKC8mbWRhc2g7L2csICJcdTIwMTRcdTIwMTQiKS5yZXBsYWNlKC8maGVsbGlwOy9nLCAiLi4uIikucmVwbGFjZSgvJmxkcXVvOy9nLCAiXHUyMDFDIikucmVwbGFjZSgvJnJkcXVvOy9nLCAiXHUyMDFEIik7CiAgICAgIGlmICh0ZXh0LnN0YXJ0c1dpdGgoIlx1MjVDRSIpIHx8IHRleHQubGVuZ3RoIDwgOCkgcmV0dXJuOwoKICAgICAgLy8g5o+Q5Y+WICLlpoLvvJrjgIwuLi7jgI0iIOagvOW8j+eahOS+i+WPpQogICAgICBjb25zdCBydU1hdGNoID0gdGV4dC5tYXRjaCgvXHU1OTgyW1x1RkYxQTpdP1xzKltcdTMwMENcdTIwMUNdKC4rPylbXHUzMDBEXHUyMDFEXS8pOwogICAgICBpZiAocnVNYXRjaCkgewogICAgICAgIGFkZEV4YW1wbGUocnVNYXRjaFsxXS50cmltKCkpOwogICAgICAgIHJldHVybjsKICAgICAgfQoKICAgICAgLy8g5LuOZ25y6ZW/5paH5pys5Lit5o+Q5Y+WIOOAjC4uLuOAjSDlvJXlj7flhoXnmoTkvovlj6UKICAgICAgY29uc3QgYWxsUXVvdGVzID0gdGV4dC5tYXRjaCgvW1x1MzAwQ1x1MjAxQ10oW15cdTMwMERcdTIwMURdezgsODB9KVtcdTMwMERcdTIwMURdL2cpOwogICAgICBpZiAoYWxsUXVvdGVzKSB7CiAgICAgICAgZm9yIChjb25zdCBxIG9mIGFsbFF1b3RlcykgewogICAgICAgICAgY29uc3QgaW5uZXIgPSBxLnNsaWNlKDEsIC0xKS50cmltKCk7CiAgICAgICAgICAvLyDnoa7kv53mmK/kvovlj6XogIzpnZ7kuablkI3vvIjmjpLpmaTjgIrjgIvkuablkI3lj7flvIDlpLTnmoTlvJXnlKjmnaXmupDvvIkKICAgICAgICAgIGlmIChpbm5lci5sZW5ndGggPiA4ICYmICFpbm5lci5zdGFydHNXaXRoKCJcdTMwMEEiKSkgewogICAgICAgICAgICBhZGRFeGFtcGxlKGlubmVyKTsKICAgICAgICAgIH0KICAgICAgICB9CiAgICAgICAgcmV0dXJuOwogICAgICB9CgogICAgICAvLyDmj5Dlj5bljIXlkKvmiJDor63or43mnKzouqvnmoTnlKjms5Xlj6XlrZDvvIjpgJrluLjmmK9qbnLljLrlnZfnmoTnn63kvovlj6XvvIkKICAgICAgaWYgKHRleHQuaW5jbHVkZXMod29yZCkgJiYgdGV4dC5sZW5ndGggPiB3b3JkLmxlbmd0aCArIDQgJiYgdGV4dC5sZW5ndGggPCAxNTApIHsKICAgICAgICBpZiAodGV4dC5zdGFydHNXaXRoKCJbIikgfHwgdGV4dC5pbmNsdWRlcygiXHU2MkZDXHU5N0YzIikgfHwgdGV4dC5pbmNsdWRlcygiXHU2Q0U4XHU5N0YzIikpIHJldHVybjsKICAgICAgICBpZiAodGV4dC5zdGFydHNXaXRoKHdvcmQpICYmIC9bYS16QS1aXHUwMTAxXHUwMEUxXHUwMUNFXHUwMEUwXHUwMTEzXHUwMEU5XHUwMTFCXHUwMEU4XHUwMTJCXHUwMEVEXHUwMUQwXHUwMEVDXHUwMTREXHUwMEYzXHUwMUQyXHUwMEYyXHUwMTZCXHUwMEZBXHUwMUQ0XHUwMEY5XHUwMUQ2XHUwMUQ4XHUwMURBXHUwMURDXHUzMTAwLVx1MzEyRl0vLnRlc3QodGV4dC5zbGljZSh3b3JkLmxlbmd0aCwgd29yZC5sZW5ndGggKyAzKSkpIHJldHVybjsKICAgICAgICBpZiAoL1tcdTMxMDAtXHUzMTJGXXsyLH0vLnRlc3QodGV4dCkpIHJldHVybjsKICAgICAgICBpZiAob3JpZ2luICYmICh0ZXh0LmluY2x1ZGVzKG9yaWdpbikgfHwgb3JpZ2luLmluY2x1ZGVzKHRleHQpKSkgcmV0dXJuOwogICAgICAgIGNvbnN0IGNsZWFuRXggPSB0ZXh0LnJlcGxhY2UoL1tcdTI1Q0VcdTI1Q0ZcdTI1QTBdL2csICIiKS50cmltKCk7CiAgICAgICAgYWRkRXhhbXBsZShjbGVhbkV4KTsKICAgICAgICByZXR1cm47CiAgICAgIH0KCiAgICAgIC8vIOWkh+eUqOmHiuS5ieadpea6kAogICAgICBpZiAoIW1lYW5pbmcpIHsKICAgICAgICBpZiAodGV4dC5pbmNsdWRlcygiWyIpICYmIHRleHQuaW5jbHVkZXMoIl0iKSkgewogICAgICAgICAgY29uc3QgbSA9IHRleHQucmVwbGFjZSgvXFsuKj9cXVxzKi8sICIiKS50cmltKCk7CiAgICAgICAgICBpZiAobS5sZW5ndGggPiA1KSBtZWFuaW5nID0gbTsKICAgICAgICB9IGVsc2UgaWYgKHRleHQubGVuZ3RoID4gOCAmJiAhdGV4dC5zdGFydHNXaXRoKCJcdTU5ODIiKSkgewogICAgICAgICAgbWVhbmluZyA9IHRleHQ7CiAgICAgICAgfQogICAgICB9CiAgICB9KTsKCiAgICAvLyDlpoLmnpzkvovlj6XkuI3otrMz5p2h77yM5LuO5Ye65aSE5Lit5o+Q5Y+W5byV55So5Y+l5L2c5Li66KGl5YWF5L6L5Y+lCiAgICBpZiAoZXhhbXBsZXMubGVuZ3RoIDwgMyAmJiBvcmlnaW4pIHsKICAgICAgY29uc3QgcXVvdGVNYXRjaCA9IG9yaWdpbi5tYXRjaCgvWyJcdTIwMUNcdTMwMENdKC57OCx9PylbIlx1MjAxRFx1MzAwRF0vKTsKICAgICAgaWYgKHF1b3RlTWF0Y2gpIHsKICAgICAgICBjb25zdCBleCA9IHF1b3RlTWF0Y2hbMV0udHJpbSgpOwogICAgICAgIGlmIChleCAmJiAhZXhhbXBsZXMuc29tZShlID0+IGUuaW5jbHVkZXMoZXgpIHx8IGV4LmluY2x1ZGVzKGUpKSkgewogICAgICAgICAgZXhhbXBsZXMucHVzaChleCk7CiAgICAgICAgfQogICAgICB9CiAgICB9CgogICAgaWYgKCFtZWFuaW5nICYmICFwaW55aW4pIHJldHVybiBudWxsOwoKICAgIHJldHVybiB7CiAgICAgIGlkaW9tOiB3b3JkLAogICAgICBwaW55aW46IHBpbnlpbiB8fCAiIiwKICAgICAgbWVhbmluZzogbWVhbmluZyB8fCBgJHt3b3JkfeeahOmHiuS5iWAsCiAgICAgIG9yaWdpbjogb3JpZ2luIHx8ICIiLAogICAgICBleGFtcGxlOiBleGFtcGxlc1swXSB8fCAiIiwKICAgICAgZXhhbXBsZXM6IGV4YW1wbGVzLmxlbmd0aCA+IDAgPyBleGFtcGxlcyA6IHVuZGVmaW5lZCwKICAgICAgc3lub255bXMsCiAgICAgIGFudG9ueW1zLAogICAgfTsKICB9IGNhdGNoIHsKICAgIHJldHVybiBudWxsOwogIH0KfQoKLy8gLS0tIFNvdXJjZSAzOiDmsYnmloflrabnvZEgKGh3eG5ldC5jb20pIC0tLQphc3luYyBmdW5jdGlvbiBzY3JhcGVGcm9tSHd4bmV0KHdvcmQ6IHN0cmluZyk6IFByb21pc2U8SWRpb20gfCBudWxsPiB7CiAgdHJ5IHsKICAgIGNvbnN0IHVybCA9IGBodHRwczovL2N5Lmh3eG5ldC5jb20vdmlldy8ke2VuY29kZVVSSUNvbXBvbmVudCh3b3JkKX0uaHRtbGA7CiAgICBjb25zdCByZXMgPSBhd2FpdCBmZXRjaCh1cmwsIHsKICAgICAgaGVhZGVyczogSEVBREVSUywKICAgICAgc2lnbmFsOiBBYm9ydFNpZ25hbC50aW1lb3V0KFRJTUVPVVQpLAogICAgfSk7CiAgICBpZiAoIXJlcy5vaykgcmV0dXJuIG51bGw7CgogICAgY29uc3QgaHRtbCA9IGF3YWl0IHJlcy50ZXh0KCk7CiAgICBjb25zdCAkID0gY2hlZXJpby5sb2FkKGh0bWwpOwoKICAgIGxldCBwaW55aW4gPSAiIjsKICAgIGxldCBtZWFuaW5nID0gIiI7CiAgICBsZXQgb3JpZ2luID0gIiI7CiAgICBjb25zdCBleGFtcGxlczogc3RyaW5nW10gPSBbXTsKICAgIGNvbnN0IHN5bm9ueW1zOiBzdHJpbmdbXSA9IFtdOwogICAgY29uc3QgYW50b255bXM6IHN0cmluZ1tdID0gW107CgogICAgLy8g5ou86Z+zCiAgICBwaW55aW4gPSAkKCIuY3lfcHkiKS50ZXh0KCkudHJpbSgpIHx8ICQoIi5waW55aW4iKS50ZXh0KCkudHJpbSgpIHx8ICIiOwoKICAgIC8vIOino+aekOWQhOS4quWtl+autQogICAgJCgiLmN5X2NvbnRlbnQgbGksIC5jeV90YiB0ciIpLmVhY2goKF8sIGVsKSA9PiB7CiAgICAgIGNvbnN0IGxhYmVsID0gJChlbCkuZmluZCgiLmN5X3RiX3RpdCwgdGQ6Zmlyc3QtY2hpbGQiKS50ZXh0KCkudHJpbSgpOwogICAgICBjb25zdCB2YWx1ZSA9ICQoZWwpLmZpbmQoIi5jeV90Yl9jb24sIHRkOmxhc3QtY2hpbGQiKS50ZXh0KCkudHJpbSgpIHx8ICQoZWwpLnRleHQoKS5yZXBsYWNlKGxhYmVsLCAiIikudHJpbSgpOwoKICAgICAgaWYgKGxhYmVsLmluY2x1ZGVzKCLop6Pph4oiKSB8fCBsYWJlbC5pbmNsdWRlcygi6YeK5LmJIikpIHsKICAgICAgICBtZWFuaW5nID0gdmFsdWU7CiAgICAgIH0KICAgICAgaWYgKGxhYmVsLmluY2x1ZGVzKCLlh7rlpIQiKSB8fCBsYWJlbC5pbmNsdWRlcygi5YW45pWFIikpIHsKICAgICAgICBvcmlnaW4gPSB2YWx1ZTsKICAgICAgfQogICAgICBpZiAobGFiZWwuaW5jbHVkZXMoIuS4vuS+iyIpIHx8IGxhYmVsLmluY2x1ZGVzKCLkvovlj6UiKSB8fCBsYWJlbC5pbmNsdWRlcygi56S65L6LIikpIHsKICAgICAgICBpZiAodmFsdWUgJiYgZXhhbXBsZXMubGVuZ3RoIDwgMykgZXhhbXBsZXMucHVzaCh2YWx1ZSk7CiAgICAgIH0KICAgICAgaWYgKGxhYmVsLmluY2x1ZGVzKCLov5HkuYkiKSkgewogICAgICAgIHN5bm9ueW1zLnB1c2goLi4udmFsdWUuc3BsaXQoL1vjgIHvvIwsXHNdKy8pLmZpbHRlcihCb29sZWFuKSk7CiAgICAgIH0KICAgICAgaWYgKGxhYmVsLmluY2x1ZGVzKCLlj43kuYkiKSkgewogICAgICAgIGFudG9ueW1zLnB1c2goLi4udmFsdWUuc3BsaXQoL1vjgIHvvIwsXHNdKy8pLmZpbHRlcihCb29sZWFuKSk7CiAgICAgIH0KICAgIH0pOwoKICAgIGlmICghbWVhbmluZyAmJiAhcGlueWluKSByZXR1cm4gbnVsbDsKCiAgICByZXR1cm4gewogICAgICBpZGlvbTogd29yZCwKICAgICAgcGlueWluLAogICAgICBtZWFuaW5nOiBtZWFuaW5nIHx8IGAke3dvcmR955qE6YeK5LmJYCwKICAgICAgb3JpZ2luOiBvcmlnaW4gfHwgIiIsCiAgICAgIGV4YW1wbGU6IGV4YW1wbGVzWzBdIHx8ICIiLAogICAgICBleGFtcGxlczogZXhhbXBsZXMubGVuZ3RoID4gMCA/IGV4YW1wbGVzIDogdW5kZWZpbmVkLAogICAgICBzeW5vbnltcywKICAgICAgYW50b255bXMsCiAgICB9OwogIH0gY2F0Y2ggewogICAgcmV0dXJuIG51bGw7CiAgfQp9CgovLyAtLS0gU291cmNlIDQ6IOWNg+evh+WbveWtpiAocWlhbnAuY29tKSAtLS0KYXN5bmMgZnVuY3Rpb24gc2NyYXBlRnJvbVFpYW5wKHdvcmQ6IHN0cmluZyk6IFByb21pc2U8SWRpb20gfCBudWxsPiB7CiAgdHJ5IHsKICAgIGNvbnN0IHVybCA9IGBodHRwczovL2NoZW5neXUucWlhbnAuY29tL2N5LyR7ZW5jb2RlVVJJQ29tcG9uZW50KHdvcmQpfWA7CiAgICBjb25zdCByZXMgPSBhd2FpdCBmZXRjaCh1cmwsIHsKICAgICAgaGVhZGVyczogSEVBREVSUywKICAgICAgc2lnbmFsOiBBYm9ydFNpZ25hbC50aW1lb3V0KFRJTUVPVVQpLAogICAgfSk7CiAgICBpZiAoIXJlcy5vaykgcmV0dXJuIG51bGw7CgogICAgY29uc3QgaHRtbCA9IGF3YWl0IHJlcy50ZXh0KCk7CiAgICBjb25zdCAkID0gY2hlZXJpby5sb2FkKGh0bWwpOwoKICAgIGxldCBwaW55aW4gPSAiIjsKICAgIGxldCBtZWFuaW5nID0gIiI7CiAgICBsZXQgb3JpZ2luID0gIiI7CiAgICBjb25zdCBleGFtcGxlczogc3RyaW5nW10gPSBbXTsKICAgIGNvbnN0IHN5bm9ueW1zOiBzdHJpbmdbXSA9IFtdOwogICAgY29uc3QgYW50b255bXM6IHN0cmluZ1tdID0gW107CgogICAgLy8g5ou86Z+zCiAgICBwaW55aW4gPSAkKCIucHksIC5waW55aW4iKS50ZXh0KCkudHJpbSgpIHx8ICIiOwoKICAgIC8vIOino+aekOWGheWuuQogICAgJCgiLmN5LWluZm8gdHIsIC5pbmZvLWl0ZW0iKS5lYWNoKChfLCBlbCkgPT4gewogICAgICBjb25zdCB0ZXh0ID0gJChlbCkudGV4dCgpOwogICAgICBpZiAodGV4dC5pbmNsdWRlcygi5ou86Z+zIikpIHsKICAgICAgICBwaW55aW4gPSBwaW55aW4gfHwgdGV4dC5yZXBsYWNlKC/mi7zpn7Nb77yaOl1ccyovLCAiIikudHJpbSgpOwogICAgICB9CiAgICAgIGlmICh0ZXh0LmluY2x1ZGVzKCLop6Pph4oiKSB8fCB0ZXh0LmluY2x1ZGVzKCLph4rkuYkiKSkgewogICAgICAgIG1lYW5pbmcgPSB0ZXh0LnJlcGxhY2UoL1vop6Pph4rph4rkuYldW++8mjpdXHMqLywgIiIpLnRyaW0oKTsKICAgICAgfQogICAgICBpZiAodGV4dC5pbmNsdWRlcygi5Ye65aSEIikpIHsKICAgICAgICBvcmlnaW4gPSB0ZXh0LnJlcGxhY2UoL+WHuuWkhFvvvJo6XVxzKi8sICIiKS50cmltKCk7CiAgICAgIH0KICAgICAgaWYgKHRleHQuaW5jbHVkZXMoIuS+i+WPpSIpIHx8IHRleHQuaW5jbHVkZXMoIuS4vuS+iyIpKSB7CiAgICAgICAgY29uc3QgZXggPSB0ZXh0LnJlcGxhY2UoL1vkvovlj6XkuL7kvotdW++8mjpdXHMqLywgIiIpLnRyaW0oKTsKICAgICAgICBpZiAoZXggJiYgZXhhbXBsZXMubGVuZ3RoIDwgMykgZXhhbXBsZXMucHVzaChleCk7CiAgICAgIH0KICAgICAgaWYgKHRleHQuaW5jbHVkZXMoIui/keS5ieivjSIpKSB7CiAgICAgICAgY29uc3Qgc3luID0gdGV4dC5yZXBsYWNlKC/ov5HkuYnor41b77yaOl1ccyovLCAiIikudHJpbSgpOwogICAgICAgIHN5bm9ueW1zLnB1c2goLi4uc3luLnNwbGl0KC9b44CB77yMLFxzXSsvKS5maWx0ZXIoQm9vbGVhbikpOwogICAgICB9CiAgICAgIGlmICh0ZXh0LmluY2x1ZGVzKCLlj43kuYnor40iKSkgewogICAgICAgIGNvbnN0IGFudCA9IHRleHQucmVwbGFjZSgv5Y+N5LmJ6K+NW++8mjpdXHMqLywgIiIpLnRyaW0oKTsKICAgICAgICBhbnRvbnltcy5wdXNoKC4uLmFudC5zcGxpdCgvW+OAge+8jCxcc10rLykuZmlsdGVyKEJvb2xlYW4pKTsKICAgICAgfQogICAgfSk7CgogICAgaWYgKCFtZWFuaW5nICYmICFwaW55aW4pIHJldHVybiBudWxsOwoKICAgIHJldHVybiB7CiAgICAgIGlkaW9tOiB3b3JkLAogICAgICBwaW55aW4sCiAgICAgIG1lYW5pbmc6IG1lYW5pbmcgfHwgYCR7d29yZH3nmoTph4rkuYlgLAogICAgICBvcmlnaW46IG9yaWdpbiB8fCAiIiwKICAgICAgZXhhbXBsZTogZXhhbXBsZXNbMF0gfHwgIiIsCiAgICAgIGV4YW1wbGVzOiBleGFtcGxlcy5sZW5ndGggPiAwID8gZXhhbXBsZXMgOiB1bmRlZmluZWQsCiAgICAgIHN5bm9ueW1zLAogICAgICBhbnRvbnltcywKICAgIH07CiAgfSBjYXRjaCB7CiAgICByZXR1cm4gbnVsbDsKICB9Cn0KCi8vIC0tLSBTb3VyY2UgNTog5rGJ56iL6K+N5YW4IChodHRwY24uY29tKSAtLS0KYXN5bmMgZnVuY3Rpb24gc2NyYXBlRnJvbUh0dHBjbih3b3JkOiBzdHJpbmcpOiBQcm9taXNlPElkaW9tIHwgbnVsbD4gewogIHRyeSB7CiAgICBjb25zdCB1cmwgPSBgaHR0cHM6Ly9oeS5odHRwY24uY29tL0h0bWwvQ3kvJHtlbmNvZGVVUklDb21wb25lbnQod29yZCl9LnNodG1sYDsKICAgIGNvbnN0IHJlcyA9IGF3YWl0IGZldGNoKHVybCwgewogICAgICBoZWFkZXJzOiBIRUFERVJTLAogICAgICBzaWduYWw6IEFib3J0U2lnbmFsLnRpbWVvdXQoVElNRU9VVCksCiAgICB9KTsKICAgIGlmICghcmVzLm9rKSByZXR1cm4gbnVsbDsKCiAgICBjb25zdCBodG1sID0gYXdhaXQgcmVzLnRleHQoKTsKICAgIGNvbnN0ICQgPSBjaGVlcmlvLmxvYWQoaHRtbCk7CgogICAgbGV0IHBpbnlpbiA9ICIiOwogICAgbGV0IG1lYW5pbmcgPSAiIjsKICAgIGxldCBvcmlnaW4gPSAiIjsKICAgIGNvbnN0IGV4YW1wbGVzOiBzdHJpbmdbXSA9IFtdOwogICAgY29uc3Qgc3lub255bXM6IHN0cmluZ1tdID0gW107CiAgICBjb25zdCBhbnRvbnltczogc3RyaW5nW10gPSBbXTsKCiAgICAvLyDlsJ3or5XlpJrnp43pgInmi6nlmagKICAgIHBpbnlpbiA9ICQoIi5waW55aW4iKS50ZXh0KCkudHJpbSgpIHx8ICQoIltjbGFzcyo9J3B5J10iKS5maXJzdCgpLnRleHQoKS50cmltKCkgfHwgIiI7CiAgICBtZWFuaW5nID0gJCgiLmp5anMsIC5leHBsYWluLCBbY2xhc3MqPSdtZWFuJ10iKS5maXJzdCgpLnRleHQoKS50cmltKCkgfHwgIiI7CiAgICBvcmlnaW4gPSAkKCIuY2h1ZCwgLm9yaWdpbiwgW2NsYXNzKj0nc291cmNlJ10iKS5maXJzdCgpLnRleHQoKS50cmltKCkgfHwgIiI7CgogICAgJCgiLmxpanUgbGksIC5leGFtcGxlIGxpIikuZWFjaCgoaSwgZWwpID0+IHsKICAgICAgaWYgKGkgPCAzKSB7CiAgICAgICAgY29uc3QgdGV4dCA9ICQoZWwpLnRleHQoKS50cmltKCk7CiAgICAgICAgaWYgKHRleHQpIGV4YW1wbGVzLnB1c2godGV4dCk7CiAgICAgIH0KICAgIH0pOwoKICAgIGlmICghbWVhbmluZyAmJiAhcGlueWluKSByZXR1cm4gbnVsbDsKCiAgICByZXR1cm4gewogICAgICBpZGlvbTogd29yZCwKICAgICAgcGlueWluLAogICAgICBtZWFuaW5nOiBtZWFuaW5nIHx8IGAke3dvcmR955qE6YeK5LmJYCwKICAgICAgb3JpZ2luOiBvcmlnaW4gfHwgIiIsCiAgICAgIGV4YW1wbGU6IGV4YW1wbGVzWzBdIHx8ICIiLAogICAgICBleGFtcGxlczogZXhhbXBsZXMubGVuZ3RoID4gMCA/IGV4YW1wbGVzIDogdW5kZWZpbmVkLAogICAgICBzeW5vbnltcywKICAgICAgYW50b255bXMsCiAgICB9OwogIH0gY2F0Y2ggewogICAgcmV0dXJuIG51bGw7CiAgfQp9CgovLyAtLS0gU291cmNlIDY6IOafpeWtl+WFuCAoY2hhemlkaWFuLmNvbSkgLS0tCmFzeW5jIGZ1bmN0aW9uIHNjcmFwZUZyb21DaGF6aWRpYW4od29yZDogc3RyaW5nKTogUHJvbWlzZTxJZGlvbSB8IG51bGw+IHsKICB0cnkgewogICAgY29uc3QgdXJsID0gYGh0dHBzOi8vd3d3LmNoYXppZGlhbi5jb20vY3kvJHtlbmNvZGVVUklDb21wb25lbnQod29yZCl9L2A7CiAgICBjb25zdCByZXMgPSBhd2FpdCBmZXRjaCh1cmwsIHsKICAgICAgaGVhZGVyczogSEVBREVSUywKICAgICAgc2lnbmFsOiBBYm9ydFNpZ25hbC50aW1lb3V0KFRJTUVPVVQpLAogICAgfSk7CiAgICBpZiAoIXJlcy5vaykgcmV0dXJuIG51bGw7CgogICAgY29uc3QgaHRtbCA9IGF3YWl0IHJlcy50ZXh0KCk7CiAgICBjb25zdCAkID0gY2hlZXJpby5sb2FkKGh0bWwpOwoKICAgIGxldCBwaW55aW4gPSAiIjsKICAgIGxldCBtZWFuaW5nID0gIiI7CiAgICBsZXQgb3JpZ2luID0gIiI7CiAgICBjb25zdCBleGFtcGxlczogc3RyaW5nW10gPSBbXTsKICAgIGNvbnN0IHN5bm9ueW1zOiBzdHJpbmdbXSA9IFtdOwogICAgY29uc3QgYW50b255bXM6IHN0cmluZ1tdID0gW107CgogICAgJCgiLmN5X2luZm8gdHIiKS5lYWNoKChfLCBlbCkgPT4gewogICAgICBjb25zdCBsYWJlbCA9ICQoZWwpLmZpbmQoInRoIikudGV4dCgpLnRyaW0oKTsKICAgICAgY29uc3QgdmFsdWUgPSAkKGVsKS5maW5kKCJ0ZCIpLnRleHQoKS50cmltKCk7CgogICAgICBpZiAobGFiZWwuaW5jbHVkZXMoIuaLvOmfsyIpKSBwaW55aW4gPSB2YWx1ZTsKICAgICAgaWYgKGxhYmVsLmluY2x1ZGVzKCLop6Pph4oiKSB8fCBsYWJlbC5pbmNsdWRlcygi6YeK5LmJIikpIG1lYW5pbmcgPSB2YWx1ZTsKICAgICAgaWYgKGxhYmVsLmluY2x1ZGVzKCLlh7rlpIQiKSkgb3JpZ2luID0gdmFsdWU7CiAgICAgIGlmIChsYWJlbC5pbmNsdWRlcygi5L6L5a2QIikgfHwgbGFiZWwuaW5jbHVkZXMoIuS+i+WPpSIpKSB7CiAgICAgICAgaWYgKHZhbHVlICYmIGV4YW1wbGVzLmxlbmd0aCA8IDMpIGV4YW1wbGVzLnB1c2godmFsdWUpOwogICAgICB9CiAgICAgIGlmIChsYWJlbC5pbmNsdWRlcygi6L+R5LmJIikpIHsKICAgICAgICBzeW5vbnltcy5wdXNoKC4uLnZhbHVlLnNwbGl0KC9b44CB77yMLFxzXSsvKS5maWx0ZXIoQm9vbGVhbikpOwogICAgICB9CiAgICAgIGlmIChsYWJlbC5pbmNsdWRlcygi5Y+N5LmJIikpIHsKICAgICAgICBhbnRvbnltcy5wdXNoKC4uLnZhbHVlLnNwbGl0KC9b44CB77yMLFxzXSsvKS5maWx0ZXIoQm9vbGVhbikpOwogICAgICB9CiAgICB9KTsKCiAgICBpZiAoIW1lYW5pbmcgJiYgIXBpbnlpbikgcmV0dXJuIG51bGw7CgogICAgcmV0dXJuIHsKICAgICAgaWRpb206IHdvcmQsCiAgICAgIHBpbnlpbiwKICAgICAgbWVhbmluZzogbWVhbmluZyB8fCBgJHt3b3JkfeeahOmHiuS5iWAsCiAgICAgIG9yaWdpbjogb3JpZ2luIHx8ICIiLAogICAgICBleGFtcGxlOiBleGFtcGxlc1swXSB8fCAiIiwKICAgICAgZXhhbXBsZXM6IGV4YW1wbGVzLmxlbmd0aCA+IDAgPyBleGFtcGxlcyA6IHVuZGVmaW5lZCwKICAgICAgc3lub255bXMsCiAgICAgIGFudG9ueW1zLAogICAgfTsKICB9IGNhdGNoIHsKICAgIHJldHVybiBudWxsOwogIH0KfQoKLyoqCiAqIOWQiOW5tuWkmuS4quadpea6kOeahOaVsOaNru+8jOe7vOWQiOaYvuekuuacgOWujOaVtOeahOWGheWuuQogKiDnrZbnlaXvvJrku47miYDmnInmnaXmupDkuK3lj5bmr4/kuKrlrZfmrrXnmoTmnIDkvbPlgLzvvIzkvovlj6Xljrvph43lkIjlubYKICovCmZ1bmN0aW9uIG1lcmdlSWRpb21EYXRhKHJlc3VsdHM6IChJZGlvbSB8IG51bGwpW10pOiBJZGlvbSB8IG51bGwgewogIGNvbnN0IHZhbGlkUmVzdWx0cyA9IHJlc3VsdHMuZmlsdGVyKChyKTogciBpcyBJZGlvbSA9PiByICE9PSBudWxsKTsKICBpZiAodmFsaWRSZXN1bHRzLmxlbmd0aCA9PT0gMCkgcmV0dXJuIG51bGw7CgogIGNvbnN0IG1lcmdlZDogSWRpb20gPSB7CiAgICBpZGlvbTogdmFsaWRSZXN1bHRzWzBdLmlkaW9tLAogICAgcGlueWluOiAiIiwKICAgIG1lYW5pbmc6ICIiLAogICAgb3JpZ2luOiAiIiwKICAgIGV4YW1wbGU6ICIiLAogICAgc3lub255bXM6IFtdLAogICAgYW50b255bXM6IFtdLAogIH07CgogIC8vIOaUtumbhuaJgOacieS+i+WPpe+8iOWOu+mHje+8iQogIGNvbnN0IGFsbEV4YW1wbGVzOiBzdHJpbmdbXSA9IFtdOwogIC8vIOaUtumbhuaJgOaciei/keS5ieivjeWSjOWPjeS5ieivje+8iOWOu+mHje+8iQogIGNvbnN0IGFsbFN5bm9ueW1zID0gbmV3IFNldDxzdHJpbmc+KCk7CiAgY29uc3QgYWxsQW50b255bXMgPSBuZXcgU2V0PHN0cmluZz4oKTsKCiAgZm9yIChjb25zdCByIG9mIHZhbGlkUmVzdWx0cykgewogICAgLy8g5ou86Z+z77ya5Y+W56ys5LiA5Liq6Z2e56m655qECiAgICBpZiAoIW1lcmdlZC5waW55aW4gJiYgci5waW55aW4pIHsKICAgICAgbWVyZ2VkLnBpbnlpbiA9IHIucGlueWluOwogICAgfQoKICAgIC8vIOmHiuS5ie+8muWPluacgOmVv+acgOivpue7hueahAogICAgaWYgKHIubWVhbmluZyAmJiByLm1lYW5pbmcubGVuZ3RoID4gbWVyZ2VkLm1lYW5pbmcubGVuZ3RoKSB7CiAgICAgIG1lcmdlZC5tZWFuaW5nID0gci5tZWFuaW5nOwogICAgfQoKICAgIC8vIOWHuuWkhO+8muWPluacgOmVv+eahAogICAgaWYgKHIub3JpZ2luICYmIHIub3JpZ2luLmxlbmd0aCA+IG1lcmdlZC5vcmlnaW4ubGVuZ3RoKSB7CiAgICAgIG1lcmdlZC5vcmlnaW4gPSByLm9yaWdpbjsKICAgIH0KCiAgICAvLyDkvovlj6XvvJrku47miYDmnInmnaXmupDmlLbpm4bvvIzljrvph40KICAgIGNvbnN0IGV4TGlzdCA9IHIuZXhhbXBsZXMgJiYgci5leGFtcGxlcy5sZW5ndGggPiAwID8gci5leGFtcGxlcyA6IHIuZXhhbXBsZSA/IFtyLmV4YW1wbGVdIDogW107CiAgICBmb3IgKGNvbnN0IGV4IG9mIGV4TGlzdCkgewogICAgICBpZiAoZXggJiYgIWFsbEV4YW1wbGVzLnNvbWUoKGUpID0+IGUgPT09IGV4IHx8IGUuaW5jbHVkZXMoZXgpIHx8IGV4LmluY2x1ZGVzKGUpKSkgewogICAgICAgIGFsbEV4YW1wbGVzLnB1c2goZXgpOwogICAgICB9CiAgICB9CgogICAgLy8g6L+R5LmJ6K+N44CB5Y+N5LmJ6K+N5ZCI5bm2CiAgICByLnN5bm9ueW1zLmZvckVhY2goKHMpID0+IHsgaWYgKHMpIGFsbFN5bm9ueW1zLmFkZChzKTsgfSk7CiAgICByLmFudG9ueW1zLmZvckVhY2goKGEpID0+IHsgaWYgKGEpIGFsbEFudG9ueW1zLmFkZChhKTsgfSk7CiAgfQoKICAvLyDmnIDlpJrkv53nlZkz5p2h5L6L5Y+lCiAgbWVyZ2VkLmV4YW1wbGVzID0gYWxsRXhhbXBsZXMuc2xpY2UoMCwgMyk7CiAgbWVyZ2VkLmV4YW1wbGUgPSBtZXJnZWQuZXhhbXBsZXNbMF0gfHwgIiI7CiAgbWVyZ2VkLnN5bm9ueW1zID0gQXJyYXkuZnJvbShhbGxTeW5vbnltcyk7CiAgbWVyZ2VkLmFudG9ueW1zID0gQXJyYXkuZnJvbShhbGxBbnRvbnltcyk7CgogIHJldHVybiBtZXJnZWQ7Cn0KCi8qKgogKiDliKTmlq3kuIDkuKrmiJDor63mlbDmja7mmK/lkKblrozmlbTvvIjmi6XmnInmi7zpn7PjgIHph4rkuYnjgIHlh7rlpITjgIHkuJTmnInoh7PlsJEy5p2h5L6L5Y+l77yJCiAqIOWPquaciemdnuW4uOWujOaVtOeahOaVsOaNruaJjei3s+i/h+e9kee7nOivt+axggogKi8KZnVuY3Rpb24gaXNDb21wbGV0ZShpZGlvbTogSWRpb20pOiBib29sZWFuIHsKICByZXR1cm4gISEoCiAgICBpZGlvbS5waW55aW4gJiYKICAgIGlkaW9tLm1lYW5pbmcgJiYKICAgIGlkaW9tLm9yaWdpbiAmJgogICAgaWRpb20uZXhhbXBsZXMgJiYKICAgIGlkaW9tLmV4YW1wbGVzLmxlbmd0aCA+PSAyCiAgKTsKfQoKLyoqCiAqIEZldGNoIGlkaW9tIGRhdGEgYnkgdHJ5aW5nIG11bHRpcGxlIHNvdXJjZXMsIHdpdGggZmFsbGJhY2sgdG8gc2VlZCBkYXRhLgogKiDlpoLmnpzmnKzlnLDmlbDmja7kuI3lrozmlbTvvIzkvJrku47nvZHnu5zmupDooaXlhYXnvLrlpLHnmoTlrZfmrrXjgIIKICovCmV4cG9ydCBhc3luYyBmdW5jdGlvbiBmZXRjaElkaW9tKHdvcmQ6IHN0cmluZyk6IFByb21pc2U8SWRpb20+IHsKICAvLyAxLiBDaGVjayBsb2NhbCBkYXRhIGZpcnN0IChmYXN0ZXN0KQogIGNvbnN0IGxvY2FsRGF0YSA9IHNlZWRJZGlvbXNbd29yZF0gfHwgZXh0ZW5kZWRJZGlvbXNbd29yZF0gfHwgbnVsbDsKCiAgLy8g5aaC5p6c5pys5Zyw5pWw5o2u5a6M5pW077yM55u05o6l6L+U5ZueCiAgaWYgKGxvY2FsRGF0YSAmJiBpc0NvbXBsZXRlKGxvY2FsRGF0YSkpIHsKICAgIHJldHVybiBsb2NhbERhdGE7CiAgfQoKICAvLyAyLiBUcnkgc2NyYXBpbmcgZnJvbSBtdWx0aXBsZSBzb3VyY2VzIGluIHBhcmFsbGVsCiAgY29uc3Qgc2NyYXBlcnMgPSBbCiAgICBzY3JhcGVGcm9tQmFpZHVIYW55dSh3b3JkKSwKICAgIHNjcmFwZUZyb21aZGljKHdvcmQpLAogICAgc2NyYXBlRnJvbUh3eG5ldCh3b3JkKSwKICAgIHNjcmFwZUZyb21RaWFucCh3b3JkKSwKICAgIHNjcmFwZUZyb21IdHRwY24od29yZCksCiAgICBzY3JhcGVGcm9tQ2hhemlkaWFuKHdvcmQpLAogIF07CgogIGNvbnN0IHJlc3VsdHMgPSBhd2FpdCBQcm9taXNlLmFsbFNldHRsZWQoc2NyYXBlcnMpOwogIGNvbnN0IHN1Y2Nlc3NSZXN1bHRzID0gcmVzdWx0cwogICAgLmZpbHRlcigocik6IHIgaXMgUHJvbWlzZUZ1bGZpbGxlZFJlc3VsdDxJZGlvbSB8IG51bGw+ID0+IHIuc3RhdHVzID09PSAiZnVsZmlsbGVkIikKICAgIC5tYXAoKHIpID0+IHIudmFsdWUpOwoKICAvLyDlpoLmnpzmnInmnKzlnLDmlbDmja7vvIzkuZ/liqDlhaXlkIjlubbliJfooajkuIDotbfnu7zlkIgKICBpZiAobG9jYWxEYXRhKSB7CiAgICBzdWNjZXNzUmVzdWx0cy51bnNoaWZ0KGxvY2FsRGF0YSk7CiAgfQoKICAvLyDlkIjlubbmiYDmnInmiJDlip/nmoTnu5PmnpwKICBjb25zdCBtZXJnZWQgPSBtZXJnZUlkaW9tRGF0YShzdWNjZXNzUmVzdWx0cyk7CiAgaWYgKG1lcmdlZCkgewogICAgcmV0dXJuIG1lcmdlZDsKICB9CgogIC8vIDMuIOWmguaenOacieacrOWcsOaVsOaNruS9hue9kee7nOWFqOmDqOWksei0pe+8jOS7jeeEtui/lOWbnuacrOWcsOaVsOaNrgogIGlmIChsb2NhbERhdGEpIHsKICAgIHJldHVybiBsb2NhbERhdGE7CiAgfQoKICAvLyA0LiBSZXR1cm4gYSBtaW5pbWFsIGZhbGxiYWNrCiAgcmV0dXJuIHsKICAgIGlkaW9tOiB3b3JkLAogICAgcGlueWluOiAiIiwKICAgIG1lYW5pbmc6ICLmmoLmnKrojrflj5bliLDph4rkuYnvvIzor7fnqI3lkI7lho3or5XjgIIiLAogICAgb3JpZ2luOiAiIiwKICAgIGV4YW1wbGU6ICIiLAogICAgc3lub255bXM6IFtdLAogICAgYW50b255bXM6IFtdLAogIH07Cn0KCi8qKgogKiDojrflj5bmiJDor63liJfooajvvIjnlKjkuo7mkJzntKLvvIkKICovCmV4cG9ydCBmdW5jdGlvbiBnZXRJZGlvbUxpc3QoKTogc3RyaW5nW10gewogIGNvbnN0IGFsbElkaW9tcyA9IG5ldyBTZXQ8c3RyaW5nPigpOwogIE9iamVjdC5rZXlzKHNlZWRJZGlvbXMpLmZvckVhY2goKGspID0+IGFsbElkaW9tcy5hZGQoaykpOwogIE9iamVjdC5rZXlzKGV4dGVuZGVkSWRpb21zKS5mb3JFYWNoKChrKSA9PiBhbGxJZGlvbXMuYWRkKGspKTsKICByZXR1cm4gQXJyYXkuZnJvbShhbGxJZGlvbXMpOwp9Cg==","encoding":"base64","mimeType":"video/mp2t","lastModified":"2026-02-28T09:06:49.457Z"}}
+import * as cheerio from "cheerio";
+import { Idiom, seedIdioms } from "@/data/seed-idioms";
+import { extendedIdioms } from "@/data/extended-idioms";
+
+// 请求超时时间
+const TIMEOUT = 10000;
+
+// 通用请求头
+const HEADERS = {
+  "User-Agent":
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+  Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+  "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
+};
+
+// --- Source 1: 百度汉语 ---
+async function scrapeFromBaiduHanyu(word: string): Promise<Idiom | null> {
+  try {
+    const url = `https://hanyu.baidu.com/s?wd=${encodeURIComponent(word)}&ptype=zici`;
+    const res = await fetch(url, {
+      headers: HEADERS,
+      signal: AbortSignal.timeout(TIMEOUT),
+    });
+    if (!res.ok) return null;
+
+    const html = await res.text();
+    const $ = cheerio.load(html);
+
+    const pinyin =
+      $("#pinyin .keyword").text().trim() ||
+      $(".pronounce .keyword").text().trim() ||
+      "";
+
+    // 获取更详细的释义
+    let meaning = "";
+    const meaningEl = $(".tab-content .content .text").first();
+    if (meaningEl.length) {
+      meaning = meaningEl.text().trim();
+    }
+    if (!meaning) {
+      meaning = $("#explanation .text").first().text().trim();
+    }
+    // 尝试获取更多释义内容
+    if (!meaning) {
+      $(".basicmean-item").each((_, el) => {
+        const text = $(el).text().trim();
+        if (text && meaning.length < 500) {
+          meaning += (meaning ? "；" : "") + text;
+        }
+      });
+    }
+
+    const origin =
+      $("#source .text").first().text().trim() ||
+      $(".tab-content")
+        .filter((_, el) => $(el).find(".title").text().includes("出处"))
+        .find(".text")
+        .first()
+        .text()
+        .trim() ||
+      "";
+
+    // 获取多条例句
+    const examples: string[] = [];
+    $("#example .text, .example-item").each((i, el) => {
+      if (i < 3) {
+        const text = $(el).text().trim();
+        if (text) examples.push(text);
+      }
+    });
+
+    const synonymsText =
+      $("#synonym .text").text().trim() ||
+      $(".tab-content")
+        .filter((_, el) => $(el).find(".title").text().includes("近义词"))
+        .find(".text")
+        .text()
+        .trim() ||
+      "";
+    const antonymsText =
+      $("#antonym .text").text().trim() ||
+      $(".tab-content")
+        .filter((_, el) => $(el).find(".title").text().includes("反义词"))
+        .find(".text")
+        .text()
+        .trim() ||
+      "";
+
+    const synonyms = synonymsText
+      ? synonymsText.split(/[、，,\s]+/).filter(Boolean)
+      : [];
+    const antonyms = antonymsText
+      ? antonymsText.split(/[、，,\s]+/).filter(Boolean)
+      : [];
+
+    if (!meaning && !pinyin) return null;
+
+    return {
+      idiom: word,
+      pinyin: pinyin || "",
+      meaning: meaning || `${word}的释义`,
+      origin: origin || "",
+      example: examples[0] || "",
+      examples: examples.length > 0 ? examples : undefined,
+      synonyms,
+      antonyms,
+    };
+  } catch {
+    return null;
+  }
+}
+
+// --- Source 2: 汉典 (zdic.net) ---
+async function scrapeFromZdic(word: string): Promise<Idiom | null> {
+  try {
+    const url = `https://www.zdic.net/hans/${encodeURIComponent(word)}`;
+    const res = await fetch(url, {
+      headers: HEADERS,
+      signal: AbortSignal.timeout(TIMEOUT),
+    });
+    if (!res.ok) return null;
+
+    const html = await res.text();
+    const $ = cheerio.load(html);
+
+    // 拼音：在 .dicpy 中（排除"注音"行）
+    let pinyin = "";
+    $("p").each((_, el) => {
+      const text = $(el).text();
+      if (text.includes("拼音") && !text.includes("注音")) {
+        pinyin = $(el).find(".dicpy").text().trim();
+      }
+    });
+
+    let meaning = "";
+    let origin = "";
+    const examples: string[] = [];
+    const synonyms: string[] = [];
+    const antonyms: string[] = [];
+
+    // 解析成语解释区块 (#cyjs .content p)
+    $("#cyjs .content p, .cyjs .content p").each((_, el) => {
+      const text = $(el).text().trim();
+      if (text.startsWith("【解释】")) {
+        meaning = text.replace("【解释】", "").trim();
+      } else if (text.startsWith("【出处】")) {
+        origin = text.replace("【出处】", "").trim();
+      } else if (text.startsWith("【示例】") || text.startsWith("【例句】")) {
+        const ex = text.replace(/^【[示例例句]+】/, "").trim();
+        if (ex && examples.length < 3) examples.push(ex);
+      } else if (text.startsWith("【近义词】")) {
+        const syn = text.replace("【近义词】", "").trim();
+        synonyms.push(...syn.split(/[、，,\s]+/).filter(Boolean));
+      } else if (text.startsWith("【反义词】")) {
+        const ant = text.replace("【反义词】", "").trim();
+        antonyms.push(...ant.split(/[、，,\s]+/).filter(Boolean));
+      }
+    });
+
+    // 从 .jnr 和 .gnr 区块提取更多例句和释义
+    const addExample = (ex: string) => {
+      if (ex && ex.length > 5 && examples.length < 3 && !examples.some(e => e.includes(ex) || ex.includes(e))) {
+        examples.push(ex);
+      }
+    };
+
+    $(".jnr p, .gnr p, .gnr div").each((_, el) => {
+      let text = $(el).text().trim();
+      text = text.replace(/&mdash;/g, "\u2014\u2014").replace(/&hellip;/g, "...").replace(/&ldquo;/g, "\u201C").replace(/&rdquo;/g, "\u201D");
+      if (text.startsWith("\u25CE") || text.length < 8) return;
+
+      // 提取 "如：「...」" 格式的例句
+      const ruMatch = text.match(/\u5982[\uFF1A:]?\s*[\u300C\u201C](.+?)[\u300D\u201D]/);
+      if (ruMatch) {
+        addExample(ruMatch[1].trim());
+        return;
+      }
+
+      // 从gnr长文本中提取 「...」 引号内的例句
+      const allQuotes = text.match(/[\u300C\u201C]([^\u300D\u201D]{8,80})[\u300D\u201D]/g);
+      if (allQuotes) {
+        for (const q of allQuotes) {
+          const inner = q.slice(1, -1).trim();
+          // 确保是例句而非书名（排除《》书名号开头的引用来源）
+          if (inner.length > 8 && !inner.startsWith("\u300A")) {
+            addExample(inner);
+          }
+        }
+        return;
+      }
+
+      // 提取包含成语词本身的用法句子（通常是jnr区块的短例句）
+      if (text.includes(word) && text.length > word.length + 4 && text.length < 150) {
+        if (text.startsWith("[") || text.includes("\u62FC\u97F3") || text.includes("\u6CE8\u97F3")) return;
+        if (text.startsWith(word) && /[a-zA-Z\u0101\u00E1\u01CE\u00E0\u0113\u00E9\u011B\u00E8\u012B\u00ED\u01D0\u00EC\u014D\u00F3\u01D2\u00F2\u016B\u00FA\u01D4\u00F9\u01D6\u01D8\u01DA\u01DC\u3100-\u312F]/.test(text.slice(word.length, word.length + 3))) return;
+        if (/[\u3100-\u312F]{2,}/.test(text)) return;
+        if (origin && (text.includes(origin) || origin.includes(text))) return;
+        const cleanEx = text.replace(/[\u25CE\u25CF\u25A0]/g, "").trim();
+        addExample(cleanEx);
+        return;
+      }
+
+      // 备用释义来源
+      if (!meaning) {
+        if (text.includes("[") && text.includes("]")) {
+          const m = text.replace(/\[.*?\]\s*/, "").trim();
+          if (m.length > 5) meaning = m;
+        } else if (text.length > 8 && !text.startsWith("\u5982")) {
+          meaning = text;
+        }
+      }
+    });
+
+    // 如果例句不足3条，从出处中提取引用句作为补充例句
+    if (examples.length < 3 && origin) {
+      const quoteMatch = origin.match(/["\u201C\u300C](.{8,}?)["\u201D\u300D]/);
+      if (quoteMatch) {
+        const ex = quoteMatch[1].trim();
+        if (ex && !examples.some(e => e.includes(ex) || ex.includes(e))) {
+          examples.push(ex);
+        }
+      }
+    }
+
+    if (!meaning && !pinyin) return null;
+
+    return {
+      idiom: word,
+      pinyin: pinyin || "",
+      meaning: meaning || `${word}的释义`,
+      origin: origin || "",
+      example: examples[0] || "",
+      examples: examples.length > 0 ? examples : undefined,
+      synonyms,
+      antonyms,
+    };
+  } catch {
+    return null;
+  }
+}
+
+// --- Source 3: 汉文学网 (hwxnet.com) ---
+async function scrapeFromHwxnet(word: string): Promise<Idiom | null> {
+  try {
+    const url = `https://cy.hwxnet.com/view/${encodeURIComponent(word)}.html`;
+    const res = await fetch(url, {
+      headers: HEADERS,
+      signal: AbortSignal.timeout(TIMEOUT),
+    });
+    if (!res.ok) return null;
+
+    const html = await res.text();
+    const $ = cheerio.load(html);
+
+    let pinyin = "";
+    let meaning = "";
+    let origin = "";
+    const examples: string[] = [];
+    const synonyms: string[] = [];
+    const antonyms: string[] = [];
+
+    // 拼音
+    pinyin = $(".cy_py").text().trim() || $(".pinyin").text().trim() || "";
+
+    // 解析各个字段
+    $(".cy_content li, .cy_tb tr").each((_, el) => {
+      const label = $(el).find(".cy_tb_tit, td:first-child").text().trim();
+      const value = $(el).find(".cy_tb_con, td:last-child").text().trim() || $(el).text().replace(label, "").trim();
+
+      if (label.includes("解释") || label.includes("释义")) {
+        meaning = value;
+      }
+      if (label.includes("出处") || label.includes("典故")) {
+        origin = value;
+      }
+      if (label.includes("举例") || label.includes("例句") || label.includes("示例")) {
+        if (value && examples.length < 3) examples.push(value);
+      }
+      if (label.includes("近义")) {
+        synonyms.push(...value.split(/[、，,\s]+/).filter(Boolean));
+      }
+      if (label.includes("反义")) {
+        antonyms.push(...value.split(/[、，,\s]+/).filter(Boolean));
+      }
+    });
+
+    if (!meaning && !pinyin) return null;
+
+    return {
+      idiom: word,
+      pinyin,
+      meaning: meaning || `${word}的释义`,
+      origin: origin || "",
+      example: examples[0] || "",
+      examples: examples.length > 0 ? examples : undefined,
+      synonyms,
+      antonyms,
+    };
+  } catch {
+    return null;
+  }
+}
+
+// --- Source 4: 千篇国学 (qianp.com) ---
+async function scrapeFromQianp(word: string): Promise<Idiom | null> {
+  try {
+    const url = `https://chengyu.qianp.com/cy/${encodeURIComponent(word)}`;
+    const res = await fetch(url, {
+      headers: HEADERS,
+      signal: AbortSignal.timeout(TIMEOUT),
+    });
+    if (!res.ok) return null;
+
+    const html = await res.text();
+    const $ = cheerio.load(html);
+
+    let pinyin = "";
+    let meaning = "";
+    let origin = "";
+    const examples: string[] = [];
+    const synonyms: string[] = [];
+    const antonyms: string[] = [];
+
+    // 拼音
+    pinyin = $(".py, .pinyin").text().trim() || "";
+
+    // 解析内容
+    $(".cy-info tr, .info-item").each((_, el) => {
+      const text = $(el).text();
+      if (text.includes("拼音")) {
+        pinyin = pinyin || text.replace(/拼音[：:]\s*/, "").trim();
+      }
+      if (text.includes("解释") || text.includes("释义")) {
+        meaning = text.replace(/[解释释义][：:]\s*/, "").trim();
+      }
+      if (text.includes("出处")) {
+        origin = text.replace(/出处[：:]\s*/, "").trim();
+      }
+      if (text.includes("例句") || text.includes("举例")) {
+        const ex = text.replace(/[例句举例][：:]\s*/, "").trim();
+        if (ex && examples.length < 3) examples.push(ex);
+      }
+      if (text.includes("近义词")) {
+        const syn = text.replace(/近义词[：:]\s*/, "").trim();
+        synonyms.push(...syn.split(/[、，,\s]+/).filter(Boolean));
+      }
+      if (text.includes("反义词")) {
+        const ant = text.replace(/反义词[：:]\s*/, "").trim();
+        antonyms.push(...ant.split(/[、，,\s]+/).filter(Boolean));
+      }
+    });
+
+    if (!meaning && !pinyin) return null;
+
+    return {
+      idiom: word,
+      pinyin,
+      meaning: meaning || `${word}的释义`,
+      origin: origin || "",
+      example: examples[0] || "",
+      examples: examples.length > 0 ? examples : undefined,
+      synonyms,
+      antonyms,
+    };
+  } catch {
+    return null;
+  }
+}
+
+// --- Source 5: 汉程词典 (httpcn.com) ---
+async function scrapeFromHttpcn(word: string): Promise<Idiom | null> {
+  try {
+    const url = `https://hy.httpcn.com/Html/Cy/${encodeURIComponent(word)}.shtml`;
+    const res = await fetch(url, {
+      headers: HEADERS,
+      signal: AbortSignal.timeout(TIMEOUT),
+    });
+    if (!res.ok) return null;
+
+    const html = await res.text();
+    const $ = cheerio.load(html);
+
+    let pinyin = "";
+    let meaning = "";
+    let origin = "";
+    const examples: string[] = [];
+    const synonyms: string[] = [];
+    const antonyms: string[] = [];
+
+    // 尝试多种选择器
+    pinyin = $(".pinyin").text().trim() || $("[class*='py']").first().text().trim() || "";
+    meaning = $(".jyjs, .explain, [class*='mean']").first().text().trim() || "";
+    origin = $(".chud, .origin, [class*='source']").first().text().trim() || "";
+
+    $(".liju li, .example li").each((i, el) => {
+      if (i < 3) {
+        const text = $(el).text().trim();
+        if (text) examples.push(text);
+      }
+    });
+
+    if (!meaning && !pinyin) return null;
+
+    return {
+      idiom: word,
+      pinyin,
+      meaning: meaning || `${word}的释义`,
+      origin: origin || "",
+      example: examples[0] || "",
+      examples: examples.length > 0 ? examples : undefined,
+      synonyms,
+      antonyms,
+    };
+  } catch {
+    return null;
+  }
+}
+
+// --- Source 6: 查字典 (chazidian.com) ---
+async function scrapeFromChazidian(word: string): Promise<Idiom | null> {
+  try {
+    const url = `https://www.chazidian.com/cy/${encodeURIComponent(word)}/`;
+    const res = await fetch(url, {
+      headers: HEADERS,
+      signal: AbortSignal.timeout(TIMEOUT),
+    });
+    if (!res.ok) return null;
+
+    const html = await res.text();
+    const $ = cheerio.load(html);
+
+    let pinyin = "";
+    let meaning = "";
+    let origin = "";
+    const examples: string[] = [];
+    const synonyms: string[] = [];
+    const antonyms: string[] = [];
+
+    $(".cy_info tr").each((_, el) => {
+      const label = $(el).find("th").text().trim();
+      const value = $(el).find("td").text().trim();
+
+      if (label.includes("拼音")) pinyin = value;
+      if (label.includes("解释") || label.includes("释义")) meaning = value;
+      if (label.includes("出处")) origin = value;
+      if (label.includes("例子") || label.includes("例句")) {
+        if (value && examples.length < 3) examples.push(value);
+      }
+      if (label.includes("近义")) {
+        synonyms.push(...value.split(/[、，,\s]+/).filter(Boolean));
+      }
+      if (label.includes("反义")) {
+        antonyms.push(...value.split(/[、，,\s]+/).filter(Boolean));
+      }
+    });
+
+    if (!meaning && !pinyin) return null;
+
+    return {
+      idiom: word,
+      pinyin,
+      meaning: meaning || `${word}的释义`,
+      origin: origin || "",
+      example: examples[0] || "",
+      examples: examples.length > 0 ? examples : undefined,
+      synonyms,
+      antonyms,
+    };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * 合并多个来源的数据，综合显示最完整的内容
+ * 策略：从所有来源中取每个字段的最佳值，例句去重合并
+ */
+function mergeIdiomData(results: (Idiom | null)[]): Idiom | null {
+  const validResults = results.filter((r): r is Idiom => r !== null);
+  if (validResults.length === 0) return null;
+
+  const merged: Idiom = {
+    idiom: validResults[0].idiom,
+    pinyin: "",
+    meaning: "",
+    origin: "",
+    example: "",
+    synonyms: [],
+    antonyms: [],
+  };
+
+  // 收集所有例句（去重）
+  const allExamples: string[] = [];
+  // 收集所有近义词和反义词（去重）
+  const allSynonyms = new Set<string>();
+  const allAntonyms = new Set<string>();
+
+  for (const r of validResults) {
+    // 拼音：取第一个非空的
+    if (!merged.pinyin && r.pinyin) {
+      merged.pinyin = r.pinyin;
+    }
+
+    // 释义：取最长最详细的
+    if (r.meaning && r.meaning.length > merged.meaning.length) {
+      merged.meaning = r.meaning;
+    }
+
+    // 出处：取最长的
+    if (r.origin && r.origin.length > merged.origin.length) {
+      merged.origin = r.origin;
+    }
+
+    // 例句：从所有来源收集，去重
+    const exList = r.examples && r.examples.length > 0 ? r.examples : r.example ? [r.example] : [];
+    for (const ex of exList) {
+      if (ex && !allExamples.some((e) => e === ex || e.includes(ex) || ex.includes(e))) {
+        allExamples.push(ex);
+      }
+    }
+
+    // 近义词、反义词合并
+    r.synonyms.forEach((s) => { if (s) allSynonyms.add(s); });
+    r.antonyms.forEach((a) => { if (a) allAntonyms.add(a); });
+  }
+
+  // 最多保留3条例句
+  merged.examples = allExamples.slice(0, 3);
+  merged.example = merged.examples[0] || "";
+  merged.synonyms = Array.from(allSynonyms);
+  merged.antonyms = Array.from(allAntonyms);
+
+  return merged;
+}
+
+/**
+ * 判断一个成语数据是否完整（拥有拼音、释义、出处、且有至少2条例句）
+ * 只有非常完整的数据才跳过网络请求
+ */
+function isComplete(idiom: Idiom): boolean {
+  return !!(
+    idiom.pinyin &&
+    idiom.meaning &&
+    idiom.origin &&
+    idiom.examples &&
+    idiom.examples.length >= 2
+  );
+}
+
+/**
+ * Fetch idiom data by trying multiple sources, with fallback to seed data.
+ * 如果本地数据不完整，会从网络源补充缺失的字段。
+ */
+export async function fetchIdiom(word: string): Promise<Idiom> {
+  // 1. Check local data first (fastest)
+  const localData = seedIdioms[word] || extendedIdioms[word] || null;
+
+  // 如果本地数据完整，直接返回
+  if (localData && isComplete(localData)) {
+    return localData;
+  }
+
+  // 2. Try scraping from multiple sources in parallel
+  const scrapers = [
+    scrapeFromBaiduHanyu(word),
+    scrapeFromZdic(word),
+    scrapeFromHwxnet(word),
+    scrapeFromQianp(word),
+    scrapeFromHttpcn(word),
+    scrapeFromChazidian(word),
+  ];
+
+  const results = await Promise.allSettled(scrapers);
+  const successResults = results
+    .filter((r): r is PromiseFulfilledResult<Idiom | null> => r.status === "fulfilled")
+    .map((r) => r.value);
+
+  // 如果有本地数据，也加入合并列表一起综合
+  if (localData) {
+    successResults.unshift(localData);
+  }
+
+  // 合并所有成功的结果
+  const merged = mergeIdiomData(successResults);
+  if (merged) {
+    return merged;
+  }
+
+  // 3. 如果有本地数据但网络全部失败，仍然返回本地数据
+  if (localData) {
+    return localData;
+  }
+
+  // 4. Return a minimal fallback
+  return {
+    idiom: word,
+    pinyin: "",
+    meaning: "暂未获取到释义，请稍后再试。",
+    origin: "",
+    example: "",
+    synonyms: [],
+    antonyms: [],
+  };
+}
+
+/**
+ * 获取成语列表（用于搜索）
+ */
+export function getIdiomList(): string[] {
+  const allIdioms = new Set<string>();
+  Object.keys(seedIdioms).forEach((k) => allIdioms.add(k));
+  Object.keys(extendedIdioms).forEach((k) => allIdioms.add(k));
+  return Array.from(allIdioms);
+}
