@@ -7,9 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "crawl": "node scripts/crawl.mjs"
+    "crawl": "node scripts/crawl.mjs",
+    "setup-db": "node scripts/setup-db.mjs"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
     "cheerio": "^1.2.0",
     "next": "16.1.6",
     "react": "19.2.3",

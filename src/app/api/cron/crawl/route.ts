@@ -2,11 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { after } from "next/server";
 import { fetchIdiom } from "@/lib/scraper";
 import { getIdiomForDate } from "@/lib/utils";
-import {
-  getCacheStats,
-  getUncachedIdioms,
-  setCrawlInProgress,
-} from "@/lib/cache";
+import { getDBStats, getUncachedWords, seedDatabase } from "@/lib/db";
 import { idiomIndex } from "@/data/seed-idioms";
 
 export const dynamic = "force-dynamic";
@@ -19,15 +15,11 @@ const MAX_ROUNDS = 600;
  * 自链式批量爬取端点
  *
  * 工作方式：
- *   1. 一次触发 → 在本轮函数内尽量多地爬取未缓存成语
+ *   1. 一次触发 → 在本轮函数内爬取一批未缓存成语（50 秒内尽量多）
  *   2. 如果还有未缓存成语 → 用 after() 自动触发下一轮
- *   3. 链式执行，直到全部 3000+ 条缓存完毕
+ *   3. 链式执行，直到全部 3000+ 条存入 Neon 数据库
  *
- * 这意味着一次 Cron 触发（或一次用户请求触发）就能自动完成全部 3000 条的爬取。
- *
- * 模式：
- *   GET /api/cron/crawl              → 自动链式爬取所有未缓存成语
- *   GET /api/cron/crawl?mode=index   → 按偏移量爬取（供本地脚本）
+ * 所有爬取结果持久化存储在 Neon 数据库中，永不丢失。
  */
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -39,8 +31,8 @@ export async function GET(request: NextRequest) {
     const offset = parseInt(searchParams.get("offset") || "0");
     const batch = parseInt(searchParams.get("batch") || "10");
     const words = idiomIndex.slice(offset, offset + batch);
-    const crawled: Record<string, unknown> = {};
-    const errors: string[] = [];
+    let successCount = 0;
+    let errorCount = 0;
 
     await Promise.allSettled(
       words.map(async (word) => {
@@ -50,12 +42,12 @@ export async function GET(request: NextRequest) {
             data.meaning &&
             data.meaning !== "暂未获取到释义，请稍后再试。"
           ) {
-            crawled[word] = data;
+            successCount++;
           } else {
-            errors.push(word);
+            errorCount++;
           }
         } catch {
-          errors.push(word);
+          errorCount++;
         }
       })
     );
@@ -65,21 +57,27 @@ export async function GET(request: NextRequest) {
       offset,
       batch: words.length,
       total: idiomIndex.length,
-      success: Object.keys(crawled).length,
-      errors: errors.length,
-      cache: getCacheStats(),
-      data: crawled,
+      success: successCount,
+      errors: errorCount,
+      cache: await getDBStats(),
     });
   }
 
+  // 首次运行：确保种子数据已写入数据库
+  if (round === 0) {
+    await seedDatabase();
+  }
+
   // 模式 B（默认）：自链式爬取全部未缓存成语
-  setCrawlInProgress(true);
   const startTime = Date.now();
-  const TIME_LIMIT = 50000; // 50 秒（留余量给响应和链式触发）
+  const TIME_LIMIT = 50000; // 50 秒
   let successCount = 0;
   let errorCount = 0;
 
-  try {
+  // 获取所有未缓存的成语
+  const uncached = await getUncachedWords();
+
+  if (uncached.length > 0) {
     // 收集未来 30 天的成语（高优先级）
     const today = new Date();
     const upcomingWords = new Set<string>();
@@ -89,8 +87,7 @@ export async function GET(request: NextRequest) {
       upcomingWords.add(getIdiomForDate(date));
     }
 
-    // 获取所有未缓存成语，优先爬取即将展示的
-    const uncached = getUncachedIdioms();
+    // 排序：优先爬取即将展示的成语
     const prioritized = [
       ...uncached.filter((w) => upcomingWords.has(w)),
       ...uncached.filter((w) => !upcomingWords.has(w)),
@@ -106,13 +103,10 @@ export async function GET(request: NextRequest) {
         batchWords.map(async (word) => {
           try {
             const data = await fetchIdiom(word);
-            if (
+            return !!(
               data.meaning &&
               data.meaning !== "暂未获取到释义，请稍后再试。"
-            ) {
-              return true;
-            }
-            return false;
+            );
           } catch {
             return false;
           }
@@ -127,12 +121,10 @@ export async function GET(request: NextRequest) {
         }
       }
     }
-  } finally {
-    setCrawlInProgress(false);
   }
 
   // 自链式续爬：如果还有未缓存成语，自动触发下一轮
-  const remaining = getUncachedIdioms().length;
+  const remaining = uncached.length - successCount - errorCount;
   if (remaining > 0 && round < MAX_ROUNDS) {
     const origin = new URL(request.url).origin;
     after(async () => {
@@ -140,9 +132,7 @@ export async function GET(request: NextRequest) {
         await fetch(`${origin}/api/cron/crawl?round=${round + 1}`, {
           signal: AbortSignal.timeout(55000),
         });
-      } catch {
-        // 链式调用失败不影响已缓存的数据
-      }
+      } catch {}
     });
   }
 
@@ -151,8 +141,8 @@ export async function GET(request: NextRequest) {
     round,
     success: successCount,
     errors: errorCount,
-    remaining,
+    remaining: Math.max(0, remaining),
     timeUsed: `${((Date.now() - startTime) / 1000).toFixed(1)}s`,
-    cache: getCacheStats(),
+    cache: await getDBStats(),
   });
 }

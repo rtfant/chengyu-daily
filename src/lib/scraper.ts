@@ -1,12 +1,8 @@
 import * as cheerio from "cheerio";
 import { Idiom, seedIdioms } from "@/data/seed-idioms";
 import { extendedIdioms } from "@/data/extended-idioms";
-import {
-  getCachedIdiom,
-  setCachedIdiom,
-  getUncachedIdioms,
-  setCrawlInProgress,
-} from "@/lib/cache";
+import { getCachedIdiom, setCachedIdiom } from "@/lib/cache";
+import { getIdiomFromDB, saveIdiomToDB } from "@/lib/db";
 
 // 请求超时时间
 const TIMEOUT = 10000;
@@ -733,25 +729,42 @@ function isComplete(idiom: Idiom): boolean {
 }
 
 /**
- * Fetch idiom data with caching support.
- * 查找顺序：缓存(内存+JSON) → 本地种子数据 → 网络爬取(7源) → 最小兜底
- * 爬取成功后自动写入内存缓存，供后续请求使用。
+ * 获取成语数据（公开 API）
+ *
+ * 三层缓存架构：
+ *   1. 内存缓存（Map）          → 同一热实例内瞬间返回（< 1ms）
+ *   2. Neon 数据库              → 持久化，冷启动也命中（~10-50ms）
+ *   3. 网络爬取（7 源合并）     → 首次获取（3-10s），结果自动写入上面两层
+ *
+ * 爬取失败时返回兜底数据（不入库，下次请求重试）。
  */
 export async function fetchIdiom(word: string): Promise<Idiom> {
-  // 1. 检查缓存（内存缓存 + 静态 JSON 缓存）
-  const cached = getCachedIdiom(word);
-  if (cached && isComplete(cached)) {
-    return cached;
+  // Layer 1: 内存缓存（最快）
+  const memCached = getCachedIdiom(word);
+  if (memCached && isComplete(memCached)) {
+    return memCached;
   }
 
-  // 2. 检查本地种子数据
+  // Layer 2: Neon 数据库（持久化）
+  try {
+    const dbData = await getIdiomFromDB(word);
+    if (dbData && isComplete(dbData)) {
+      setCachedIdiom(word, dbData);
+      return dbData;
+    }
+  } catch {
+    // 数据库不可用，继续尝试本地数据和网络爬取
+  }
+
+  // Layer 2.5: 本地种子数据
   const localData = seedIdioms[word] || extendedIdioms[word] || null;
   if (localData && isComplete(localData)) {
     setCachedIdiom(word, localData);
+    saveIdiomToDB(word, localData).catch(() => {}); // 异步写入DB，不阻塞
     return localData;
   }
 
-  // 3. 并行爬取 7 个网络源
+  // Layer 3: 并行爬取 7 个网络源
   const scrapers = [
     scrapeFromBaiduHanyu(word),
     scrapeFromZdic(word),
@@ -764,25 +777,26 @@ export async function fetchIdiom(word: string): Promise<Idiom> {
 
   const results = await Promise.allSettled(scrapers);
   const successResults = results
-    .filter((r): r is PromiseFulfilledResult<Idiom | null> => r.status === "fulfilled")
+    .filter(
+      (r): r is PromiseFulfilledResult<Idiom | null> =>
+        r.status === "fulfilled"
+    )
     .map((r) => r.value);
 
-  // 将本地数据、缓存数据也加入合并列表
+  // 将本地数据也加入合并列表
   if (localData) successResults.unshift(localData);
-  if (cached) successResults.unshift(cached);
 
   // 合并所有来源的结果
   const merged = mergeIdiomData(successResults);
   if (merged) {
-    setCachedIdiom(word, merged); // 写入缓存
+    setCachedIdiom(word, merged);
+    saveIdiomToDB(word, merged).catch(() => {}); // 异步写入DB
     return merged;
   }
 
-  // 4. 网络全部失败，返回本地数据或缓存数据
+  // 兜底
   if (localData) return localData;
-  if (cached) return cached;
 
-  // 5. 最小兜底
   return {
     idiom: word,
     pinyin: "",
@@ -802,45 +816,4 @@ export function getIdiomList(): string[] {
   Object.keys(seedIdioms).forEach((k) => allIdioms.add(k));
   Object.keys(extendedIdioms).forEach((k) => allIdioms.add(k));
   return Array.from(allIdioms);
-}
-
-/**
- * 后台自动爬取：获取并缓存 N 条尚未缓存的成语。
- * 每次用户请求后自动调用，逐步填满缓存。
- * @param count 本次爬取的数量（默认 5）
- */
-export async function backgroundCrawl(
-  count: number = 5
-): Promise<{ success: number; errors: number }> {
-  const uncached = getUncachedIdioms();
-  if (uncached.length === 0) return { success: 0, errors: 0 };
-
-  setCrawlInProgress(true);
-  const batch = uncached.slice(0, count);
-  let success = 0;
-  let errors = 0;
-
-  try {
-    await Promise.allSettled(
-      batch.map(async (word) => {
-        try {
-          const data = await fetchIdiom(word);
-          if (
-            data.meaning &&
-            data.meaning !== "暂未获取到释义，请稍后再试。"
-          ) {
-            success++;
-          } else {
-            errors++;
-          }
-        } catch {
-          errors++;
-        }
-      })
-    );
-  } finally {
-    setCrawlInProgress(false);
-  }
-
-  return { success, errors };
 }
