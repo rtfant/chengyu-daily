@@ -145,30 +145,29 @@ function IconHome() {
 // ============================
 function IdiomSkeleton() {
   return (
-    <div className="card-paper rounded-lg p-6 md:p-10 lg:p-12 max-w-2xl w-full mx-auto">
-      <div className="flex justify-center mb-6">
-        <div className="skeleton rounded h-16 w-64" />
+    <div className="card-paper rounded-lg p-5 md:p-8 lg:p-10 max-w-2xl w-full mx-auto">
+      <div className="flex justify-center mb-3 md:mb-5">
+        <div className="skeleton rounded h-12 md:h-16 w-48 md:w-64" />
       </div>
-      <div className="skeleton rounded h-4 w-32 mx-auto mb-6" />
-      <div className="flex items-center justify-center gap-3 mb-6">
+      <div className="skeleton rounded h-4 w-32 mx-auto mb-3 md:mb-4" />
+      <div className="flex items-center justify-center gap-3 mb-4">
         <div className="skeleton flex-1 max-w-[80px] h-px" />
         <div className="skeleton rounded-full h-2 w-2" />
         <div className="skeleton flex-1 max-w-[80px] h-px" />
       </div>
-      <div className="space-y-4">
+      <div className="space-y-3">
         <div className="skeleton rounded h-4 w-16 mb-1" />
         <div className="skeleton rounded h-4 w-full" />
         <div className="skeleton rounded h-4 w-3/4" />
       </div>
-      <div className="space-y-3 mt-5">
+      <div className="space-y-2 mt-3">
         <div className="skeleton rounded h-4 w-12 mb-1" />
         <div className="skeleton rounded h-4 w-5/6" />
       </div>
-      <div className="space-y-3 mt-5">
+      <div className="space-y-2 mt-3">
         <div className="skeleton rounded h-4 w-12 mb-1" />
         <div className="skeleton rounded h-3 w-full" />
         <div className="skeleton rounded h-3 w-4/5" />
-        <div className="skeleton rounded h-3 w-3/4" />
       </div>
     </div>
   );
@@ -350,7 +349,7 @@ export default function ChengYuApp() {
       {/* ============================
           Header
           ============================ */}
-      <header className="flex items-center justify-between px-4 md:px-8 py-4 md:py-6">
+      <header className="flex items-center justify-between px-4 md:px-8 py-3 md:py-5">
         <div className="flex items-center gap-3">
           <h1
             className="text-lg md:text-xl tracking-widest"
@@ -384,9 +383,9 @@ export default function ChengYuApp() {
       {/* ============================
           Main Content
           ============================ */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 pb-8">
+      <main className="flex-1 flex flex-col items-center justify-center px-4 pb-4 md:pb-6">
         {/* Date display */}
-        <div className="text-center mb-6 md:mb-8 animate-fade-in">
+        <div className="text-center mb-3 md:mb-5 animate-fade-in">
           <p
             className="text-sm md:text-base tracking-[0.25em]"
             style={{ color: "var(--text-muted)" }}
@@ -411,12 +410,12 @@ export default function ChengYuApp() {
         ) : idiom ? (
           <div
             key={animKey}
-            className="card-paper rounded-lg p-6 md:p-10 lg:p-12 max-w-2xl w-full mx-auto"
+            className="card-paper rounded-lg p-5 md:p-8 lg:p-10 max-w-2xl w-full mx-auto"
           >
             {/* Idiom characters */}
-            <div className="text-center mb-6 opacity-0 animate-fade-in-up stagger-1">
+            <div className="text-center mb-3 md:mb-5 opacity-0 animate-fade-in-up stagger-1">
               <h2
-                className="text-4xl md:text-6xl lg:text-7xl tracking-[0.15em] leading-tight"
+                className="text-3xl md:text-5xl lg:text-6xl tracking-[0.15em] leading-tight"
                 style={{
                   fontFamily: "var(--font-mashan), cursive",
                   color: "var(--text-primary)",
@@ -429,7 +428,7 @@ export default function ChengYuApp() {
             {/* Pinyin */}
             {idiom.pinyin && (
               <p
-                className="text-center text-sm md:text-base tracking-widest mb-6 opacity-0 animate-fade-in-up stagger-2"
+                className="text-center text-sm md:text-base tracking-widest mb-3 md:mb-4 opacity-0 animate-fade-in-up stagger-2"
                 style={{ color: "var(--text-muted)" }}
               >
                 {idiom.pinyin}
@@ -437,14 +436,14 @@ export default function ChengYuApp() {
             )}
 
             {/* Decorative divider */}
-            <div className="flex items-center justify-center gap-3 mb-6 opacity-0 animate-fade-in stagger-2">
+            <div className="flex items-center justify-center gap-3 mb-4 opacity-0 animate-fade-in stagger-2">
               <div className="ink-divider flex-1 max-w-[80px]" />
               <div className="ink-dot" />
               <div className="ink-divider flex-1 max-w-[80px]" />
             </div>
 
             {/* Meaning */}
-            <div className="mb-5 opacity-0 animate-fade-in-up stagger-3">
+            <div className="mb-3 opacity-0 animate-fade-in-up stagger-3">
               <div className="flex items-start gap-2 mb-1">
                 <span
                   className="text-xs font-semibold tracking-widest shrink-0 mt-0.5"
@@ -463,7 +462,7 @@ export default function ChengYuApp() {
 
             {/* Origin */}
             {idiom.origin && (
-              <div className="mb-5 opacity-0 animate-fade-in-up stagger-4">
+              <div className="mb-3 opacity-0 animate-fade-in-up stagger-4">
                 <div className="flex items-start gap-2 mb-1">
                   <span
                     className="text-xs font-semibold tracking-widest shrink-0 mt-0.5"
@@ -483,8 +482,8 @@ export default function ChengYuApp() {
 
             {/* Examples - 显示多条例句 */}
             {(idiom.examples?.length || idiom.example) && (
-              <div className="mb-5 opacity-0 animate-fade-in-up stagger-5">
-                <div className="flex items-start gap-2 mb-2">
+              <div className="mb-3 opacity-0 animate-fade-in-up stagger-5">
+                <div className="flex items-start gap-2 mb-1">
                   <span
                     className="text-xs font-semibold tracking-widest shrink-0 mt-0.5"
                     style={{ color: "var(--accent-gold)" }}
@@ -525,7 +524,7 @@ export default function ChengYuApp() {
             {/* Synonyms & Antonyms */}
             {(idiom.synonyms.length > 0 || idiom.antonyms.length > 0) && (
               <div className="opacity-0 animate-fade-in-up stagger-6">
-                <div className="ink-divider mb-4" />
+                <div className="ink-divider mb-3" />
                 <div className="flex flex-wrap gap-x-8 gap-y-2 text-sm">
                   {idiom.synonyms.length > 0 && (
                     <div className="flex items-center gap-2">
@@ -566,7 +565,7 @@ export default function ChengYuApp() {
         {/* ============================
             Navigation
             ============================ */}
-        <div className="flex items-center justify-center gap-3 mt-8 animate-fade-in" style={{ animationDelay: "0.6s" }}>
+        <div className="flex items-center justify-center gap-3 mt-4 md:mt-6 animate-fade-in" style={{ animationDelay: "0.6s" }}>
           <button onClick={goToPrevDay} className="btn-ink rounded-full p-2.5" aria-label="前一天" title="前一天">
             <IconChevronLeft />
           </button>
@@ -602,7 +601,7 @@ export default function ChengYuApp() {
       {/* ============================
           Footer
           ============================ */}
-      <footer className="text-center py-4 px-4">
+      <footer className="text-center py-3 px-4">
         <p className="text-xs tracking-wider" style={{ color: "var(--text-muted)" }}>
           数据来源：百度汉语 · 汉典 · 汉文学网 · 千篇国学　|　每日自动更新
         </p>

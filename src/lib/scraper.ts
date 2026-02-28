@@ -157,19 +157,69 @@ async function scrapeFromZdic(word: string): Promise<Idiom | null> {
       }
     });
 
-    // 备用：从 .jnr 区块解析
-    if (!meaning) {
-      $(".jnr p").each((_, el) => {
-        const text = $(el).text().trim();
-        // 跳过标题行 (如 "◎ 垂头丧气 chuítóu-sàngqì")
-        if (text.startsWith("◎")) return;
-        if (text.includes("[") && !meaning) {
-          // 如 "[dejected] 低着头无精打彩的样子"
-          meaning = text.replace(/\[.*?\]\s*/, "").trim();
-        } else if (!meaning && text.length > 5) {
+    // 从 .jnr 和 .gnr 区块提取更多例句和释义
+    const addExample = (ex: string) => {
+      if (ex && ex.length > 5 && examples.length < 3 && !examples.some(e => e.includes(ex) || ex.includes(e))) {
+        examples.push(ex);
+      }
+    };
+
+    $(".jnr p, .gnr p, .gnr div").each((_, el) => {
+      let text = $(el).text().trim();
+      text = text.replace(/&mdash;/g, "\u2014\u2014").replace(/&hellip;/g, "...").replace(/&ldquo;/g, "\u201C").replace(/&rdquo;/g, "\u201D");
+      if (text.startsWith("\u25CE") || text.length < 8) return;
+
+      // 提取 "如：「...」" 格式的例句
+      const ruMatch = text.match(/\u5982[\uFF1A:]?\s*[\u300C\u201C](.+?)[\u300D\u201D]/);
+      if (ruMatch) {
+        addExample(ruMatch[1].trim());
+        return;
+      }
+
+      // 从gnr长文本中提取 「...」 引号内的例句
+      const allQuotes = text.match(/[\u300C\u201C]([^\u300D\u201D]{8,80})[\u300D\u201D]/g);
+      if (allQuotes) {
+        for (const q of allQuotes) {
+          const inner = q.slice(1, -1).trim();
+          // 确保是例句而非书名（排除《》书名号开头的引用来源）
+          if (inner.length > 8 && !inner.startsWith("\u300A")) {
+            addExample(inner);
+          }
+        }
+        return;
+      }
+
+      // 提取包含成语词本身的用法句子（通常是jnr区块的短例句）
+      if (text.includes(word) && text.length > word.length + 4 && text.length < 150) {
+        if (text.startsWith("[") || text.includes("\u62FC\u97F3") || text.includes("\u6CE8\u97F3")) return;
+        if (text.startsWith(word) && /[a-zA-Z\u0101\u00E1\u01CE\u00E0\u0113\u00E9\u011B\u00E8\u012B\u00ED\u01D0\u00EC\u014D\u00F3\u01D2\u00F2\u016B\u00FA\u01D4\u00F9\u01D6\u01D8\u01DA\u01DC\u3100-\u312F]/.test(text.slice(word.length, word.length + 3))) return;
+        if (/[\u3100-\u312F]{2,}/.test(text)) return;
+        if (origin && (text.includes(origin) || origin.includes(text))) return;
+        const cleanEx = text.replace(/[\u25CE\u25CF\u25A0]/g, "").trim();
+        addExample(cleanEx);
+        return;
+      }
+
+      // 备用释义来源
+      if (!meaning) {
+        if (text.includes("[") && text.includes("]")) {
+          const m = text.replace(/\[.*?\]\s*/, "").trim();
+          if (m.length > 5) meaning = m;
+        } else if (text.length > 8 && !text.startsWith("\u5982")) {
           meaning = text;
         }
-      });
+      }
+    });
+
+    // 如果例句不足3条，从出处中提取引用句作为补充例句
+    if (examples.length < 3 && origin) {
+      const quoteMatch = origin.match(/["\u201C\u300C](.{8,}?)["\u201D\u300D]/);
+      if (quoteMatch) {
+        const ex = quoteMatch[1].trim();
+        if (ex && !examples.some(e => e.includes(ex) || ex.includes(e))) {
+          examples.push(ex);
+        }
+      }
     }
 
     if (!meaning && !pinyin) return null;
@@ -484,14 +534,16 @@ function mergeIdiomData(results: (Idiom | null)[]): Idiom | null {
 }
 
 /**
- * 判断一个成语数据是否完整（拥有拼音、释义、出处、例句等关键字段）
+ * 判断一个成语数据是否完整（拥有拼音、释义、出处、且有至少2条例句）
+ * 只有非常完整的数据才跳过网络请求
  */
 function isComplete(idiom: Idiom): boolean {
   return !!(
     idiom.pinyin &&
     idiom.meaning &&
     idiom.origin &&
-    (idiom.examples?.length || idiom.example)
+    idiom.examples &&
+    idiom.examples.length >= 2
   );
 }
 
