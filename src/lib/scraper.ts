@@ -123,28 +123,53 @@ async function scrapeFromZdic(word: string): Promise<Idiom | null> {
     const html = await res.text();
     const $ = cheerio.load(html);
 
-    const pinyin = $(".dicpy .z_ts2").first().text().trim() || "";
-    let meaning = "";
-    let origin = "";
-    const examples: string[] = [];
-
-    $(".content .jnr, .gc_cy_jjnr").each((_, el) => {
-      const text = $(el).text().trim();
-      if (text.includes("解释") || text.includes("释义")) {
-        meaning = text.replace(/^[\s\S]*?[：:]\s*/, "").trim();
-      }
-      if (text.includes("出处")) {
-        origin = text.replace(/^[\s\S]*?[：:]\s*/, "").trim();
-      }
-      if (text.includes("例句") || text.includes("示例")) {
-        const ex = text.replace(/^[\s\S]*?[：:]\s*/, "").trim();
-        if (ex && examples.length < 3) examples.push(ex);
+    // 拼音：在 .dicpy 中（排除"注音"行）
+    let pinyin = "";
+    $("p").each((_, el) => {
+      const text = $(el).text();
+      if (text.includes("拼音") && !text.includes("注音")) {
+        pinyin = $(el).find(".dicpy").text().trim();
       }
     });
 
-    // 尝试其他选择器获取释义
+    let meaning = "";
+    let origin = "";
+    const examples: string[] = [];
+    const synonyms: string[] = [];
+    const antonyms: string[] = [];
+
+    // 解析成语解释区块 (#cyjs .content p)
+    $("#cyjs .content p, .cyjs .content p").each((_, el) => {
+      const text = $(el).text().trim();
+      if (text.startsWith("【解释】")) {
+        meaning = text.replace("【解释】", "").trim();
+      } else if (text.startsWith("【出处】")) {
+        origin = text.replace("【出处】", "").trim();
+      } else if (text.startsWith("【示例】") || text.startsWith("【例句】")) {
+        const ex = text.replace(/^【[示例例句]+】/, "").trim();
+        if (ex && examples.length < 3) examples.push(ex);
+      } else if (text.startsWith("【近义词】")) {
+        const syn = text.replace("【近义词】", "").trim();
+        synonyms.push(...syn.split(/[、，,\s]+/).filter(Boolean));
+      } else if (text.startsWith("【反义词】")) {
+        const ant = text.replace("【反义词】", "").trim();
+        antonyms.push(...ant.split(/[、，,\s]+/).filter(Boolean));
+      }
+    });
+
+    // 备用：从 .jnr 区块解析
     if (!meaning) {
-      meaning = $(".gc_cy_jy").text().trim() || $(".jnr p").first().text().trim() || "";
+      $(".jnr p").each((_, el) => {
+        const text = $(el).text().trim();
+        // 跳过标题行 (如 "◎ 垂头丧气 chuítóu-sàngqì")
+        if (text.startsWith("◎")) return;
+        if (text.includes("[") && !meaning) {
+          // 如 "[dejected] 低着头无精打彩的样子"
+          meaning = text.replace(/\[.*?\]\s*/, "").trim();
+        } else if (!meaning && text.length > 5) {
+          meaning = text;
+        }
+      });
     }
 
     if (!meaning && !pinyin) return null;
@@ -156,8 +181,8 @@ async function scrapeFromZdic(word: string): Promise<Idiom | null> {
       origin: origin || "",
       example: examples[0] || "",
       examples: examples.length > 0 ? examples : undefined,
-      synonyms: [],
-      antonyms: [],
+      synonyms,
+      antonyms,
     };
   } catch {
     return null;
@@ -397,47 +422,90 @@ async function scrapeFromChazidian(word: string): Promise<Idiom | null> {
 }
 
 /**
- * 合并多个来源的数据，选择最完整的
+ * 合并多个来源的数据，综合显示最完整的内容
+ * 策略：从所有来源中取每个字段的最佳值，例句去重合并
  */
 function mergeIdiomData(results: (Idiom | null)[]): Idiom | null {
   const validResults = results.filter((r): r is Idiom => r !== null);
   if (validResults.length === 0) return null;
 
-  // 找到释义最详细的结果
-  let best = validResults[0];
+  const merged: Idiom = {
+    idiom: validResults[0].idiom,
+    pinyin: "",
+    meaning: "",
+    origin: "",
+    example: "",
+    synonyms: [],
+    antonyms: [],
+  };
+
+  // 收集所有例句（去重）
+  const allExamples: string[] = [];
+  // 收集所有近义词和反义词（去重）
+  const allSynonyms = new Set<string>();
+  const allAntonyms = new Set<string>();
+
   for (const r of validResults) {
-    // 优先选择释义更长的
-    if (r.meaning.length > best.meaning.length) {
-      best = { ...best, meaning: r.meaning };
+    // 拼音：取第一个非空的
+    if (!merged.pinyin && r.pinyin) {
+      merged.pinyin = r.pinyin;
     }
-    // 合并例句
-    if (r.examples && r.examples.length > (best.examples?.length || 0)) {
-      best = { ...best, examples: r.examples, example: r.examples[0] || best.example };
+
+    // 释义：取最长最详细的
+    if (r.meaning && r.meaning.length > merged.meaning.length) {
+      merged.meaning = r.meaning;
     }
-    // 补充缺失的字段
-    if (!best.pinyin && r.pinyin) best = { ...best, pinyin: r.pinyin };
-    if (!best.origin && r.origin) best = { ...best, origin: r.origin };
-    if (best.synonyms.length === 0 && r.synonyms.length > 0) {
-      best = { ...best, synonyms: r.synonyms };
+
+    // 出处：取最长的
+    if (r.origin && r.origin.length > merged.origin.length) {
+      merged.origin = r.origin;
     }
-    if (best.antonyms.length === 0 && r.antonyms.length > 0) {
-      best = { ...best, antonyms: r.antonyms };
+
+    // 例句：从所有来源收集，去重
+    const exList = r.examples && r.examples.length > 0 ? r.examples : r.example ? [r.example] : [];
+    for (const ex of exList) {
+      if (ex && !allExamples.some((e) => e === ex || e.includes(ex) || ex.includes(e))) {
+        allExamples.push(ex);
+      }
     }
+
+    // 近义词、反义词合并
+    r.synonyms.forEach((s) => { if (s) allSynonyms.add(s); });
+    r.antonyms.forEach((a) => { if (a) allAntonyms.add(a); });
   }
 
-  return best;
+  // 最多保留3条例句
+  merged.examples = allExamples.slice(0, 3);
+  merged.example = merged.examples[0] || "";
+  merged.synonyms = Array.from(allSynonyms);
+  merged.antonyms = Array.from(allAntonyms);
+
+  return merged;
+}
+
+/**
+ * 判断一个成语数据是否完整（拥有拼音、释义、出处、例句等关键字段）
+ */
+function isComplete(idiom: Idiom): boolean {
+  return !!(
+    idiom.pinyin &&
+    idiom.meaning &&
+    idiom.origin &&
+    (idiom.examples?.length || idiom.example)
+  );
 }
 
 /**
  * Fetch idiom data by trying multiple sources, with fallback to seed data.
+ * 如果本地数据不完整，会从网络源补充缺失的字段。
  */
 export async function fetchIdiom(word: string): Promise<Idiom> {
   // 1. Check local data first (fastest)
-  if (seedIdioms[word]) {
-    return seedIdioms[word];
-  }
-  if (extendedIdioms[word]) {
-    return extendedIdioms[word];
+  const localData = seedIdioms[word] || extendedIdioms[word] || null;
+
+  // 如果本地数据完整，直接返回
+  if (localData && isComplete(localData)) {
+    return localData;
   }
 
   // 2. Try scraping from multiple sources in parallel
@@ -455,13 +523,23 @@ export async function fetchIdiom(word: string): Promise<Idiom> {
     .filter((r): r is PromiseFulfilledResult<Idiom | null> => r.status === "fulfilled")
     .map((r) => r.value);
 
+  // 如果有本地数据，也加入合并列表一起综合
+  if (localData) {
+    successResults.unshift(localData);
+  }
+
   // 合并所有成功的结果
   const merged = mergeIdiomData(successResults);
   if (merged) {
     return merged;
   }
 
-  // 3. Return a minimal fallback
+  // 3. 如果有本地数据但网络全部失败，仍然返回本地数据
+  if (localData) {
+    return localData;
+  }
+
+  // 4. Return a minimal fallback
   return {
     idiom: word,
     pinyin: "",

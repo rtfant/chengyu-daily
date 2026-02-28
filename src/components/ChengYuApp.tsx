@@ -145,16 +145,30 @@ function IconHome() {
 // ============================
 function IdiomSkeleton() {
   return (
-    <div className="card-paper rounded-lg p-8 md:p-12 max-w-2xl mx-auto">
-      <div className="flex justify-center mb-8">
+    <div className="card-paper rounded-lg p-6 md:p-10 lg:p-12 max-w-2xl w-full mx-auto">
+      <div className="flex justify-center mb-6">
         <div className="skeleton rounded h-16 w-64" />
       </div>
-      <div className="skeleton rounded h-4 w-32 mx-auto mb-8" />
+      <div className="skeleton rounded h-4 w-32 mx-auto mb-6" />
+      <div className="flex items-center justify-center gap-3 mb-6">
+        <div className="skeleton flex-1 max-w-[80px] h-px" />
+        <div className="skeleton rounded-full h-2 w-2" />
+        <div className="skeleton flex-1 max-w-[80px] h-px" />
+      </div>
       <div className="space-y-4">
+        <div className="skeleton rounded h-4 w-16 mb-1" />
         <div className="skeleton rounded h-4 w-full" />
         <div className="skeleton rounded h-4 w-3/4" />
+      </div>
+      <div className="space-y-3 mt-5">
+        <div className="skeleton rounded h-4 w-12 mb-1" />
         <div className="skeleton rounded h-4 w-5/6" />
-        <div className="skeleton rounded h-4 w-2/3" />
+      </div>
+      <div className="space-y-3 mt-5">
+        <div className="skeleton rounded h-4 w-12 mb-1" />
+        <div className="skeleton rounded h-3 w-full" />
+        <div className="skeleton rounded h-3 w-4/5" />
+        <div className="skeleton rounded h-3 w-3/4" />
       </div>
     </div>
   );
@@ -590,7 +604,7 @@ export default function ChengYuApp() {
           ============================ */}
       <footer className="text-center py-4 px-4">
         <p className="text-xs tracking-wider" style={{ color: "var(--text-muted)" }}>
-          数据来源：百度汉语 · 汉典 · 国学大师　|　每日自动更新
+          数据来源：百度汉语 · 汉典 · 汉文学网 · 千篇国学　|　每日自动更新
         </p>
       </footer>
 
