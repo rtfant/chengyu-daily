@@ -349,7 +349,7 @@ export default function ChengYuApp() {
       {/* ============================
           Header
           ============================ */}
-      <header className="flex items-center justify-between px-4 md:px-8 py-3 md:py-5">
+      <header className="flex items-center justify-between px-4 md:px-8 py-2.5 md:py-4">
         <div className="flex items-center gap-3">
           <h1
             className="text-lg md:text-xl tracking-widest"
@@ -383,7 +383,7 @@ export default function ChengYuApp() {
       {/* ============================
           Main Content
           ============================ */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 pb-4 md:pb-6">
+      <main className="flex-1 flex flex-col items-center px-4 pt-2 md:pt-4 pb-4 md:pb-6">
         {/* Date display */}
         <div className="text-center mb-3 md:mb-5 animate-fade-in">
           <p
