@@ -1,6 +1,7 @@
 import * as cheerio from "cheerio";
 import { Idiom, seedIdioms } from "@/data/seed-idioms";
 import { extendedIdioms } from "@/data/extended-idioms";
+import { getCachedIdiom, setCachedIdiom } from "@/lib/cache";
 
 // 请求超时时间
 const TIMEOUT = 10000;
@@ -505,8 +506,6 @@ async function scrapeFromChazidian(word: string): Promise<Idiom | null> {
 async function scrapeFromQianwanku(word: string): Promise<Idiom | null> {
   try {
     // 第一步：通过搜索页获取成语的内部 ID
-    const gb2312Word = new TextEncoder().encode(word);
-    // 将 UTF-8 字节转为 URL 编码的 GB2312（近似处理：直接用 encodeURIComponent）
     const searchUrl = `http://chengyu.qianwanku.com/socy.asp?txtname=${encodeURIComponent(word)}`;
     const searchRes = await fetch(searchUrl, {
       headers: {
@@ -729,19 +728,25 @@ function isComplete(idiom: Idiom): boolean {
 }
 
 /**
- * Fetch idiom data by trying multiple sources, with fallback to seed data.
- * 如果本地数据不完整，会从网络源补充缺失的字段。
+ * Fetch idiom data with caching support.
+ * 查找顺序：缓存(内存+JSON) → 本地种子数据 → 网络爬取(7源) → 最小兜底
+ * 爬取成功后自动写入内存缓存，供后续请求使用。
  */
 export async function fetchIdiom(word: string): Promise<Idiom> {
-  // 1. Check local data first (fastest)
-  const localData = seedIdioms[word] || extendedIdioms[word] || null;
+  // 1. 检查缓存（内存缓存 + 静态 JSON 缓存）
+  const cached = getCachedIdiom(word);
+  if (cached && isComplete(cached)) {
+    return cached;
+  }
 
-  // 如果本地数据完整，直接返回
+  // 2. 检查本地种子数据
+  const localData = seedIdioms[word] || extendedIdioms[word] || null;
   if (localData && isComplete(localData)) {
+    setCachedIdiom(word, localData);
     return localData;
   }
 
-  // 2. Try scraping from multiple sources in parallel
+  // 3. 并行爬取 7 个网络源
   const scrapers = [
     scrapeFromBaiduHanyu(word),
     scrapeFromZdic(word),
@@ -757,23 +762,22 @@ export async function fetchIdiom(word: string): Promise<Idiom> {
     .filter((r): r is PromiseFulfilledResult<Idiom | null> => r.status === "fulfilled")
     .map((r) => r.value);
 
-  // 如果有本地数据，也加入合并列表一起综合
-  if (localData) {
-    successResults.unshift(localData);
-  }
+  // 将本地数据、缓存数据也加入合并列表
+  if (localData) successResults.unshift(localData);
+  if (cached) successResults.unshift(cached);
 
-  // 合并所有成功的结果
+  // 合并所有来源的结果
   const merged = mergeIdiomData(successResults);
   if (merged) {
+    setCachedIdiom(word, merged); // 写入缓存
     return merged;
   }
 
-  // 3. 如果有本地数据但网络全部失败，仍然返回本地数据
-  if (localData) {
-    return localData;
-  }
+  // 4. 网络全部失败，返回本地数据或缓存数据
+  if (localData) return localData;
+  if (cached) return cached;
 
-  // 4. Return a minimal fallback
+  // 5. 最小兜底
   return {
     idiom: word,
     pinyin: "",
