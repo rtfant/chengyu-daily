@@ -1,7 +1,12 @@
 import * as cheerio from "cheerio";
 import { Idiom, seedIdioms } from "@/data/seed-idioms";
 import { extendedIdioms } from "@/data/extended-idioms";
-import { getCachedIdiom, setCachedIdiom } from "@/lib/cache";
+import {
+  getCachedIdiom,
+  setCachedIdiom,
+  getUncachedIdioms,
+  setCrawlInProgress,
+} from "@/lib/cache";
 
 // 请求超时时间
 const TIMEOUT = 10000;
@@ -797,4 +802,45 @@ export function getIdiomList(): string[] {
   Object.keys(seedIdioms).forEach((k) => allIdioms.add(k));
   Object.keys(extendedIdioms).forEach((k) => allIdioms.add(k));
   return Array.from(allIdioms);
+}
+
+/**
+ * 后台自动爬取：获取并缓存 N 条尚未缓存的成语。
+ * 每次用户请求后自动调用，逐步填满缓存。
+ * @param count 本次爬取的数量（默认 5）
+ */
+export async function backgroundCrawl(
+  count: number = 5
+): Promise<{ success: number; errors: number }> {
+  const uncached = getUncachedIdioms();
+  if (uncached.length === 0) return { success: 0, errors: 0 };
+
+  setCrawlInProgress(true);
+  const batch = uncached.slice(0, count);
+  let success = 0;
+  let errors = 0;
+
+  try {
+    await Promise.allSettled(
+      batch.map(async (word) => {
+        try {
+          const data = await fetchIdiom(word);
+          if (
+            data.meaning &&
+            data.meaning !== "暂未获取到释义，请稍后再试。"
+          ) {
+            success++;
+          } else {
+            errors++;
+          }
+        } catch {
+          errors++;
+        }
+      })
+    );
+  } finally {
+    setCrawlInProgress(false);
+  }
+
+  return { success, errors };
 }
