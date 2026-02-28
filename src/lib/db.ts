@@ -56,6 +56,10 @@ async function ensureTable(): Promise<boolean> {
         updated_at  TIMESTAMPTZ DEFAULT NOW()
       )
     `;
+    
+    // 创建索引加速查询
+    await query`CREATE INDEX IF NOT EXISTS idx_idioms_served ON idioms(served)`;
+    
     _initialized = true;
     return true;
   } catch (e) {
@@ -219,7 +223,25 @@ export async function getDBStats(): Promise<{
 }
 
 /**
+ * 获取未缓存的成语数量（快速统计，不返回列表）
+ */
+export async function getUncachedCount(): Promise<number> {
+  const ok = await ensureTable();
+  if (!ok) return idiomIndex.length;
+
+  try {
+    const rows = await query`SELECT COUNT(*)::int AS count FROM idioms`;
+    const cached = (rows[0] as { count: number }).count;
+    return idiomIndex.length - cached;
+  } catch (e) {
+    console.error("[DB] getUncachedCount failed:", e);
+    return idiomIndex.length;
+  }
+}
+
+/**
  * 获取未缓存的成语列表（不在数据库中的）
+ * 优化：使用 NOT IN 子查询，避免全表扫描
  */
 export async function getUncachedWords(): Promise<string[]> {
   const ok = await ensureTable();
@@ -267,6 +289,28 @@ export async function resetForRecrawlDB(): Promise<void> {
 // ============================================================
 // 种子数据初始化
 // ============================================================
+
+/**
+ * 批量获取随机成语（从数据库中随机抽取）
+ */
+export async function getRandomIdiomsFromDB(
+  count: number = 10
+): Promise<Idiom[]> {
+  const ok = await ensureTable();
+  if (!ok) return [];
+
+  try {
+    const rows = await query`
+      SELECT * FROM idioms 
+      ORDER BY RANDOM() 
+      LIMIT ${count}
+    `;
+    return rows.map((r) => rowToIdiom(r as DBRow));
+  } catch (e) {
+    console.error("[DB] getRandomIdiomsFromDB failed:", e);
+    return [];
+  }
+}
 
 /**
  * 将本地种子数据批量写入数据库（仅在数据库为空时执行）

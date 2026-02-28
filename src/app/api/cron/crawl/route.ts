@@ -2,8 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { after } from "next/server";
 import { fetchIdiom } from "@/lib/scraper";
 import { getIdiomForDate } from "@/lib/utils";
-import { getDBStats, getUncachedWords, seedDatabase } from "@/lib/db";
 import { idiomIndex } from "@/data/seed-idioms";
+import {
+  getDBStats,
+  getUncachedWords,
+  seedDatabase,
+  getUncachedCount,
+} from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -74,7 +79,20 @@ export async function GET(request: NextRequest) {
   let successCount = 0;
   let errorCount = 0;
 
-  // 获取所有未缓存的成语
+  // 获取所有未缓存的成语（优化：使用快速计数判断）
+  const uncachedCount = await getUncachedCount();
+  if (uncachedCount === 0) {
+    return NextResponse.json({
+      round,
+      success: 0,
+      errors: 0,
+      remaining: 0,
+      timeUsed: "0s",
+      cache: await getDBStats(),
+      message: "All idioms cached",
+    });
+  }
+
   const uncached = await getUncachedWords();
 
   if (uncached.length > 0) {
