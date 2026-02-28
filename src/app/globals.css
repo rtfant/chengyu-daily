@@ -1,0 +1,317 @@
+@import "tailwindcss";
+
+/* ============================
+   墨韵 — Digital Ink Scroll
+   ============================ */
+
+:root {
+  --bg-primary: #f5f0e6;
+  --bg-secondary: #ece5d5;
+  --bg-card: #fffdf5;
+  --text-primary: #1a1a1a;
+  --text-secondary: #5c4f3a;
+  --text-muted: #8a7e6b;
+  --accent-red: #b8302c;
+  --accent-red-light: #d44440;
+  --accent-gold: #c5a04e;
+  --accent-jade: #2d8a5e;
+  --border-color: #d4c9b4;
+  --shadow-color: rgba(90, 70, 40, 0.12);
+  --ink-wash: rgba(60, 50, 30, 0.04);
+}
+
+[data-theme="dark"] {
+  --bg-primary: #0e0e0e;
+  --bg-secondary: #161614;
+  --bg-card: #1c1b18;
+  --text-primary: #e8e0d0;
+  --text-secondary: #b8a88a;
+  --text-muted: #7a6e5a;
+  --accent-red: #e05050;
+  --accent-red-light: #f06060;
+  --accent-gold: #d4b060;
+  --accent-jade: #40b87a;
+  --border-color: #2e2a22;
+  --shadow-color: rgba(0, 0, 0, 0.4);
+  --ink-wash: rgba(255, 240, 200, 0.02);
+}
+
+@theme inline {
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-card: var(--bg-card);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-accent-red: var(--accent-red);
+  --color-accent-red-light: var(--accent-red-light);
+  --color-accent-gold: var(--accent-gold);
+  --color-accent-jade: var(--accent-jade);
+  --color-border: var(--border-color);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: "Noto Serif SC", "Songti SC", "SimSun", serif;
+  min-height: 100vh;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Ink wash background texture */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 20% 20%, var(--ink-wash) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, var(--ink-wash) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 50%, var(--ink-wash) 0%, transparent 80%);
+}
+
+/* ============================
+   Animations
+   ============================ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes brushStroke {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes inkDrop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.animate-brush {
+  animation: brushStroke 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-ink-drop {
+  animation: inkDrop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.35s; }
+.stagger-4 { animation-delay: 0.5s; }
+.stagger-5 { animation-delay: 0.65s; }
+.stagger-6 { animation-delay: 0.8s; }
+
+/* ============================
+   Ink decorative elements
+   ============================ */
+
+.ink-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--border-color) 20%,
+    var(--border-color) 80%,
+    transparent 100%
+  );
+}
+
+.ink-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent-red);
+}
+
+/* Card paper texture */
+.card-paper {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  box-shadow:
+    0 2px 8px var(--shadow-color),
+    0 0 0 1px rgba(0, 0, 0, 0.02);
+  transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Seal stamp effect */
+.seal-stamp {
+  color: var(--accent-red);
+  border: 2px solid var(--accent-red);
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  transform: rotate(-6deg);
+  opacity: 0.8;
+}
+
+/* Loading skeleton */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-secondary) 25%,
+    var(--bg-card) 50%,
+    var(--bg-secondary) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Button base */
+.btn-ink {
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: inherit;
+}
+
+.btn-ink:hover {
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+  box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.btn-ink:active {
+  transform: scale(0.97);
+}
+
+.btn-accent {
+  background-color: var(--accent-red);
+  color: #fff;
+  border: 1px solid var(--accent-red);
+}
+
+.btn-accent:hover {
+  background-color: var(--accent-red-light);
+  border-color: var(--accent-red-light);
+  color: #fff;
+}
+
+/* Search input */
+.search-input {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-family: inherit;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 3px rgba(197, 160, 78, 0.15);
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Toast notification */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 12px 24px;
+  box-shadow: 0 4px 16px var(--shadow-color);
+  z-index: 1000;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  font-size: 0.875rem;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  max-width: 540px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px var(--shadow-color);
+}
