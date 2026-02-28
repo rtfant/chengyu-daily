@@ -467,10 +467,10 @@ export default function ChengYuApp() {
               </div>
             )}
 
-            {/* Example */}
-            {idiom.example && (
+            {/* Examples - 显示多条例句 */}
+            {(idiom.examples?.length || idiom.example) && (
               <div className="mb-5 opacity-0 animate-fade-in-up stagger-5">
-                <div className="flex items-start gap-2 mb-1">
+                <div className="flex items-start gap-2 mb-2">
                   <span
                     className="text-xs font-semibold tracking-widest shrink-0 mt-0.5"
                     style={{ color: "var(--accent-gold)" }}
@@ -478,12 +478,33 @@ export default function ChengYuApp() {
                     例句
                   </span>
                 </div>
-                <p
-                  className="text-sm md:text-base leading-relaxed"
-                  style={{ color: "var(--text-secondary)" }}
-                >
-                  {idiom.example}
-                </p>
+                <div className="space-y-2">
+                  {idiom.examples && idiom.examples.length > 0 ? (
+                    idiom.examples.map((ex, idx) => (
+                      <p
+                        key={idx}
+                        className="text-sm md:text-base leading-relaxed pl-4 border-l-2"
+                        style={{
+                          color: "var(--text-secondary)",
+                          borderColor: "var(--accent-jade)",
+                          opacity: 1 - idx * 0.15
+                        }}
+                      >
+                        {ex}
+                      </p>
+                    ))
+                  ) : idiom.example ? (
+                    <p
+                      className="text-sm md:text-base leading-relaxed pl-4 border-l-2"
+                      style={{
+                        color: "var(--text-secondary)",
+                        borderColor: "var(--accent-jade)"
+                      }}
+                    >
+                      {idiom.example}
+                    </p>
+                  ) : null}
+                </div>
               </div>
             )}
 
