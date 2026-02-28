@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Noto_Serif_SC, Ma_Shan_Zheng } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 const notoSerifSC = Noto_Serif_SC({
@@ -51,6 +52,7 @@ export default function RootLayout({
       </head>
       <body className={`${notoSerifSC.variable} ${maShanZheng.variable}`}>
         {children}
+        <SpeedInsights />
       </body>
     </html>
   );
